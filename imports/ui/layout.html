@@ -1,0 +1,13 @@
+<template name="layout">
+    <!--Navbar component-->
+    {{> navbar }}
+
+    {{#if loggingIn}}
+        {{> loading}}
+    {{else}}
+        {{> Template.dynamic template=page}}
+    {{/if}}
+
+    <!-- Alerts component-->
+    {{> sAlert}}
+</template>

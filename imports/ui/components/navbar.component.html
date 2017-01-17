@@ -1,0 +1,46 @@
+<template name="navbar">
+    <section class="hero is-light">
+        <div class="hero-header">
+            <nav class="nav">
+                <div class="container">
+                    <div class="nav-left">
+                        <a class="nav-item is-brand" href="{{pathFor 'public.index'}}">
+                            {{> logo}}
+                        </a>
+                        {{#if currentUser}}
+                        {{/if}}
+                    </div>
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <span id="nav-toggle" class="nav-toggle {{navbarToggle}}">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+
+                    <div class="nav-right nav-menu {{active}}">
+                        {{#with currentUser}}
+                            <a href="{{pathFor 'rea.profile.index'}}"
+                               class="nav-item {{isActiveRoute regex='profile'}}">
+                                {{> icon name='user' size='is-small'}}
+                                <span>{{username}}</span>
+                            </a>
+                            <a class="nav-item js-logout" href="#">{{> icon name='sign-out' size='is-small'}}</a>
+                        {{else}}
+                            <a href="{{pathFor 'public.auth.login'}}" class="nav-item">
+                                {{> icon name='sign-in' size='is-small'}}
+                                <span>Login</span>
+                            </a>
+                            <span class="nav-item">
+                              <a href="{{pathFor 'public.auth.register'}}"
+                                 class="button is-primary is-outlined is-inverted">
+                                {{> icon name='registered' size='is-small'}}
+                                  <span>Register</span>
+                              </a>
+                            </span>
+                        {{/with}}
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
+</template>

@@ -1,0 +1,83 @@
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+# meteor librairies
+meteor-base
+ecmascript
+es5-shim
+check
+tracker
+
+# standards librairies
+session
+jquery
+less
+email
+http
+reactive-var
+reactive-dict
+
+# data
+mongo
+aldeed:simple-schema
+aldeed:collection2
+dburles:collection-helpers
+matb33:collection-hooks
+tmeasday:publish-counts
+reywood:publish-composite
+
+# files
+ostrio:files
+
+# ui
+blaze-html-templates
+aldeed:template-extension
+raix:handlebar-helpers
+twbs:bootstrap
+fortawesome:fontawesome
+mrt:nprogress
+juliancwirko:s-alert
+juliancwirko:s-alert-scale
+
+# router
+kadira:flow-router
+kadira:blaze-layout
+arillo:flow-router-helpers
+zimme:active-route
+tomwasd:flow-router-seo
+meteorhacks:picker
+
+# forms
+aldeed:autoform
+
+# accounts
+accounts-base
+accounts-password
+alanning:roles
+mizzao:user-status
+jparker:gravatar
+
+# methods and mixins
+mdg:validated-method
+mdg:validation-error
+tunifight:loggedin-mixin
+rlivingston:simple-schema-mixin
+ziarno:restrict-mixin
+
+# mobile
+mobile-experience
+
+# utilities
+momentjs:moment
+jparker:crypto-md5
+
+# testing
+browser-policy
+
+# production
+standard-minifier-css
+standard-minifier-js
+ddp-rate-limiter
