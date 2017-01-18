@@ -2,6 +2,7 @@ import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {LoggedInMixin} from 'meteor/tunifight:loggedin-mixin';
 import {simpleSchemaMixin} from 'meteor/rlivingston:simple-schema-mixin';
 import {RestrictMixin} from 'meteor/ziarno:restrict-mixin';
+import {ProvideMixin} from 'meteor/ziarno:provide-mixin';
 
 ValidatedMethod.mixins = {};
 
@@ -40,10 +41,11 @@ ValidatedMethod.mixins.isServer = function (options) {
             return;
         }
 
-        return r.call(args);
+        return r.call(this, args);
     };
 
     return options;
 };
 
 ValidatedMethod.mixins.restrict = RestrictMixin;
+ValidatedMethod.mixins.provide = ProvideMixin;

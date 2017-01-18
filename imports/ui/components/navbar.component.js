@@ -5,9 +5,9 @@ import {ReactiveDict} from 'meteor/reactive-dict';
 
 import NotificationService from '../../startup/services/notification.service.js';
 
-import './logo';
-
 import './navbar.component.html';
+
+import './logo.component';
 
 Template["navbar"].onCreated(function onCreatedFunction() {
     this.state = new ReactiveDict();

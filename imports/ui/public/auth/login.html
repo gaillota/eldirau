@@ -1,3 +1,41 @@
 <template name="public.auth.login">
-    Login
+    <section class="hero is-fullheight is-dark is-bold">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-4 is-offset-4">
+                        <h1 class="title">{{> icon name='sign-in' size='is-medium'}} Log in</h1>
+                        <div class="box">
+                            {{#autoForm schema=loginForm id="public.auth.login"}}
+                                <label class="label">{{afFieldLabelText name="email"}}</label>
+                                <p class="control has-icon">
+                                    {{> afFieldInput name="email" class="input"}}
+                                    <i class="fa fa-envelope"></i>
+                                    <span class="help is-danger">{{{afFieldMessage name='email'}}}</span>
+                                </p>
+                                <label class="label">{{afFieldLabelText name="password"}}</label>
+                                <p class="control has-icon">
+                                    {{> afFieldInput name="password" class="input"}}
+                                    <i class="fa fa-lock"></i>
+                                    <span class="help is-danger">{{{afFieldMessage name='password'}}}</span>
+                                </p>
+                                <hr>
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        Login
+                                    </button>
+                                    <a href="{{pathFor 'public.index'}}" class="button">
+                                        Cancel
+                                    </a>
+                                </p>
+                            {{/autoForm}}
+                        </div>
+                        <p class="has-text-centered">
+                            Need an account ? <a href="{{pathFor 'public.auth.register'}}">Register an account</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>

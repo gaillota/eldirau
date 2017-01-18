@@ -1,6 +1,6 @@
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
-export const form = new SimpleSchema({
+export const LoginForm = new SimpleSchema({
     email: {
         type: String,
         label: 'E-mail address',

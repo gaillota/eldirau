@@ -36,7 +36,6 @@ ostrio:files
 blaze-html-templates
 aldeed:template-extension
 raix:handlebar-helpers
-twbs:bootstrap
 fortawesome:fontawesome
 mrt:nprogress
 juliancwirko:s-alert
@@ -66,6 +65,7 @@ mdg:validation-error
 tunifight:loggedin-mixin
 rlivingston:simple-schema-mixin
 ziarno:restrict-mixin
+ziarno:provide-mixin
 
 # mobile
 mobile-experience

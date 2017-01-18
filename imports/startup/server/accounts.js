@@ -16,7 +16,7 @@ Accounts.urls.resetPassword = function (token) {
 /**
  * Accounts emails settings
  */
-Accounts.emailTemplates.from = "Eldir.au <no-reply@eldirau.com>";
+Accounts.emailTemplates.from = "Eldir.au <no-reply@eldir.au>";
 
 Accounts.emailTemplates.siteName = "Eldir.au";
 

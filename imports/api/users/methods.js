@@ -1,6 +1,5 @@
 import {Meteor} from 'meteor/meteor';
 import {Accounts} from 'meteor/accounts-base';
-import {check} from 'meteor/check';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
 import {Roles} from 'meteor/alanning:roles';
@@ -8,7 +7,7 @@ import {_} from 'lodash';
 
 import {RegistrationForm, ForgotPasswordForm} from '../../startup/common/forms/auth';
 
-export * from './admin-methods';
+// export * from './admin-methods';
 
 export const register = new ValidatedMethod({
     name: 'users.register',
@@ -32,40 +31,33 @@ export const register = new ValidatedMethod({
 
 export const forgot = new ValidatedMethod({
     name: 'users.forgot',
-    mixins: [ValidatedMethod.mixins.checkSchema],
+    mixins: [ValidatedMethod.mixins.checkSchema, ValidatedMethod.mixins.provide],
     schema: [ForgotPasswordForm],
-    run(doc) {
-        if (this.isSimulation) {
-            return;
-        }
-
-        const user = Accounts.findUserByEmail(doc.email);
-
-        if (!user) {
-            throw new Meteor.Error("not-found", 'User could not be found.');
-        }
-
+    provide: function({email}) {
+        return Accounts.findUserByEmail(email);
+    },
+    run({email}, user) {
         // Specifying email in case of multiple emails situation
-        Accounts.sendResetPasswordEmail(user._id, doc.email);
+        Accounts.sendResetPasswordEmail(user._id, email);
     }
 });
 
-export const edit = new ValidatedMethod({
-    name: 'users.profile.edit',
-    mixins: [ValidatedMethod.mixins.isLoggedIn, ValidatedMethod.mixins.checkSchema],
-    schema: UpdateProfileForm,
-    run(profile) {
-        const user = Meteor.users.findOne(this.userId);
-
-        _.merge(user.profile, profile);
-
-        return Meteor.users.update(this.userId, {
-            $set: {
-                "profile": profile
-            }
-        });
-    }
-});
+// export const edit = new ValidatedMethod({
+//     name: 'users.profile.edit',
+//     mixins: [ValidatedMethod.mixins.isLoggedIn, ValidatedMethod.mixins.checkSchema],
+//     schema: UpdateProfileForm,
+//     run(profile) {
+//         const user = Meteor.users.findOne(this.userId);
+//
+//         _.merge(user.profile, profile);
+//
+//         return Meteor.users.update(this.userId, {
+//             $set: {
+//                 "profile": profile
+//             }
+//         });
+//     }
+// });
 
 export const harakiri = new ValidatedMethod({
     name: 'users.harakiri',
