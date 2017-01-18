@@ -5,7 +5,8 @@ export const LoginForm = new SimpleSchema({
         type: String,
         label: 'E-mail address',
         autoform: {
-            autofocus: true
+            autofocus: true,
+            placeholder: 'Ex: dumbledore_dies@edu.poudlard.com'
         }
     },
     password: {

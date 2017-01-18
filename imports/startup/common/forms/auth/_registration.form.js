@@ -6,7 +6,8 @@ export const RegistrationForm = new SimpleSchema({
         min: 2,
         max: 50,
         autoform: {
-            placeholder: 'First name'
+            placeholder: 'First name',
+            autofocus: true
         }
     },
     lastName: {

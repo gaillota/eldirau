@@ -1,6 +1,6 @@
 import {sAlert} from "meteor/juliancwirko:s-alert";
 
-export default NotificationService = (function () {
+export const NotificationService = (function () {
     let functions = {};
 
     const computeTimeout = (text) => {

@@ -4,6 +4,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveDict} from 'meteor/reactive-dict';
 
 import NotificationService from '../../startup/services/notification.service.js';
+import {showModal} from '../../startup/utilities'
 
 import './navbar.component.html';
 
@@ -25,6 +26,11 @@ Template["navbar"].events({
         event.preventDefault();
 
         instance.state.set('active', !instance.state.get('active'));
+    },
+    'click .js-create-album'(event) {
+        event.preventDefault();
+
+        showModal('createAlbumModal');
     },
     'click .js-logout'(event) {
         event.preventDefault();

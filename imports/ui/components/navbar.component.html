@@ -8,6 +8,9 @@
                             {{> logo}}
                         </a>
                         {{#if currentUser}}
+                            <a href="#" class="nav-item js-create-album">
+                                New album
+                            </a>
                         {{/if}}
                     </div>
                     <!-- Brand and toggle get grouped for better mobile display -->
@@ -22,7 +25,7 @@
                             <a href="{{pathFor 'rea.profile.index'}}"
                                class="nav-item {{isActiveRoute regex='profile'}}">
                                 {{> icon name='user' size='is-small'}}
-                                <span>{{username}}</span>
+                                <span>{{fullName}}</span>
                             </a>
                             <a class="nav-item js-logout" href="#">{{> icon name='sign-out' size='is-small'}}</a>
                         {{else}}

@@ -1,3 +1,51 @@
 <template name="public.auth.register">
-    Register
+    <section class="hero is-fullheight is-light is-bold">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-4 is-offset-4">
+                        <h1 class="title">Register an account</h1>
+                        <div class="box">
+                            {{#autoForm schema=registrationForm id="public.auth.register" type="method" meteormethod="users.register"}}
+                                <label class="label">{{afFieldLabelText name="firstName"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="firstName" class="input"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='firstName'}}}</span>
+                                </p>
+                                <label class="label">{{afFieldLabelText name="lastName"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="lastName" class="input"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='lastName'}}}</span>
+                                </p>
+                                <label class="label">{{afFieldLabelText name="email"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="email" class="input"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='email'}}}</span>
+                                </p>
+                                <label class="label">{{afFieldLabelText name="password"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="password" class="input"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='password'}}}</span>
+                                </p>
+                                <label class="label">{{afFieldLabelText name="confirm"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="confirm" class="input"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='confirm'}}}</span>
+                                </p>
+                                <hr>
+                                <p class="control">
+                                    <button type="submit" class="button is-primary">
+                                        Register
+                                    </button>
+                                    <a href="{{pathFor 'public.auth.login'}}" class="button">
+                                        Cancel
+                                    </a>
+                                </p>
+                            {{/autoForm}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>

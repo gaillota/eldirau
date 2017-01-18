@@ -1,0 +1,24 @@
+<template name="rea.albums.modals.create">
+    <div class="modal {{isActive}}">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="section" style="-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;">
+                <h1 class="title">Create new album</h1>
+                <hr>
+                {{#autoForm schema=createAlbumForm id="createAlbumModal" resetOnSuccess=true}}
+                    <label class="label">{{afFieldLabelText name="title"}}</label>
+                    <p class="control">
+                        {{> afFieldInput name="title" class="input"}}
+                        <span class="help is-danger">{{{afFieldMessage name='title'}}}</span>
+                    </p>
+                    <p class="control">
+                        <button type="submit" class="button is-success">
+                            Submit
+                        </button>
+                    </p>
+                {{/autoForm}}
+            </div>
+        </div>
+        <button class="modal-close"></button>
+    </div>
+</template>

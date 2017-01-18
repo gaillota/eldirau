@@ -2,7 +2,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {BlazeLayout} from 'meteor/kadira:blaze-layout';
 import {Accounts} from 'meteor/accounts-base';
 
-import NotificationService from '../../../services/notification.service.js';
+import {NotificationService} from '../../../services/notification.service.js';
 import {resetDispatcher} from '../../../utilities';
 
 import '../../../../ui/layout';
@@ -34,7 +34,7 @@ FlowRouter.route('/verify-email/:token', {
             if (error) {
                 NotificationService.error(error.toString());
             } else {
-                NotificationService.success('Your account is now activated. Thanks !');
+                NotificationService.success('Your account is now activated. Welcome on Eldir.au !');
             }
             FlowRouter.go('public.index');
         });

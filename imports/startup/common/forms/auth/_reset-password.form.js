@@ -10,7 +10,7 @@ export const ResetPasswordForm = new SimpleSchema({
             type: "password"
         }
     },
-    newPasswordConfirm: {
+    confirmPassword: {
         type: String,
         label: "Confirm new password",
         autoform: {

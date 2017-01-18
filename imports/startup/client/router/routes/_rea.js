@@ -7,6 +7,6 @@ import '../../../../ui/rea/index';
 FlowRouter.route('/', {
     name: 'rea.index',
     action() {
-        BlazeLayout.render('rea.index');
+        BlazeLayout.render('layout', {page: 'rea.index'});
     }
 });

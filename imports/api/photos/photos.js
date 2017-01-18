@@ -15,24 +15,26 @@ export const Photos = new FilesCollection({
     },
 });
 
-const isImage = file => file.type.indexOf("image") === 0 &&  /png|jpg|jpeg/i.test(file.extension);
+const isImage = file => file.type.indexOf("image") === 0 && /png|jpg|jpeg/i.test(file.extension);
 
-Photos.deny({
-    insert: function () {
-        return true;
-    },
-    update: function () {
-        return true;
-    },
-    remove: function () {
-        return true;
-    }
-});
+if (Meteor.isServer) {
+    Photos.deny({
+        insert: function () {
+            return true;
+        },
+        update: function () {
+            return true;
+        },
+        remove: function () {
+            return true;
+        }
+    });
+}
 
 const schema = _extend(Photos.schema, {
     albumId: {
         type: String,
-        regEx: SimpleSchema.RegExp.Id
+        regEx: SimpleSchema.RegEx.Id
     },
     title: {
         type: String
