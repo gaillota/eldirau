@@ -2,20 +2,18 @@ import {ValidatedMethod} from 'meteor/mdg:validated-method';
 
 import {Albums} from './albums';
 import {Photos} from '../photos/photos';
+import {CreateAlbumForm} from "../../startup/common/forms/albums/create.form";
 
 const mixins = ValidatedMethod.mixins;
 
 export const create = new ValidatedMethod({
     name: 'albums.create',
     mixins: [mixins.isLoggedIn, mixins.checkSchema],
-    schema: {
-        title: {
-            type: String
-        }
-    },
-    run({title}) {
+    schema: CreateAlbumForm,
+    run({title, description}) {
         return Albums.insert({
             title,
+            description,
             ownerId: this.userId
         })
     }

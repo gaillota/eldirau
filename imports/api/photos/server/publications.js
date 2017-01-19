@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 
 import {Photos} from '../photos';
 
-Meteor.publishComposite('album.photos', (albumId, limit = 20) => {
+Meteor.publishComposite('photos.album', (albumId, limit = 20) => {
     return {
         find() {
             if (!this.userId) {
@@ -25,7 +25,7 @@ Meteor.publishComposite('photo', (photoId) => {
                 return this.ready();
             }
 
-            return Photos.find(photoId);
+            return Photos.find(photoId).cursor;
         }
     }
 });

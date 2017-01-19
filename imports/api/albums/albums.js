@@ -1,6 +1,8 @@
 import {Mongo} from 'meteor/mongo';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
+import {Photos} from "../photos/photos";
+
 export const Albums = new Mongo.Collection("albums");
 
 // Deny all client-side access (management through methods)
@@ -21,6 +23,11 @@ Albums.schema = new SimpleSchema({
         type: String,
         max: 60
     },
+    description: {
+        type: String,
+        max: 255,
+        optional: true,
+    },
     ownerId: {
         type: String,
         regEx: SimpleSchema.RegEx.Id
@@ -40,3 +47,14 @@ Albums.schema = new SimpleSchema({
 });
 
 Albums.attachSchema(Albums.schema);
+
+Albums.helpers({
+    owner() {
+        return Meteor.users.findOne(this.ownerId);
+    },
+    photos() {
+        return Photos.find({
+            albumId: this._id
+        }).cursor;
+    }
+});

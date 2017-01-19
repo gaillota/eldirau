@@ -17,12 +17,14 @@
                     <h1 class="title">Albums</h1>
                     <h3 class="subtitle">Last 0 albums created</h3>
                     <div class="columns is-multiline">
-                    <!--{{#each album in albums}}-->
+                    {{#each album in albums}}
                         <div class="column is-4">
                             <div class="card">
                                 <div class="card-image">
                                     <figure class="image is-4by3">
-                                        <img src="http://bulma.io/images/placeholders/1280x960.png" alt="Image">
+                                        <a href="{{pathFor 'rea.albums.view' albumId=album._id}}">
+                                            <img src="http://bulma.io/images/placeholders/1280x960.png" alt="Image">
+                                        </a>
                                     </figure>
                                 </div>
                                 <div class="card-content">
@@ -33,22 +35,24 @@
                                             </figure>
                                         </div>
                                         <div class="media-content">
-                                            <p class="title is-4">John Smith</p>
+                                            <p class="title is-4">{{album.title}}</p>
                                             <p class="subtitle is-6">@johnsmith</p>
                                         </div>
                                     </div>
 
                                     <div class="content">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                                        <a>#css</a> <a>#responsive</a>
+                                        {{#with album.description}}
+                                            <em>{{this}}</em>
+                                        {{else}}
+                                            <em>No description provided</em>
+                                        {{/with}}
                                         <br>
-                                        <small>11:09 PM - 1 Jan 2016</small>
+                                        <small>{{formatDate album.createdAt}}</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                            <!--{{/each}}-->
+                    {{/each}}
                     </div>
                 </div>
             </div>

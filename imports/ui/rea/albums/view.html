@@ -1,0 +1,56 @@
+<template name="rea.albums.view">
+    <section class="section">
+        <div class="container">
+            {{#unless subsReady}}
+                {{> loading}}
+            {{/unless}}
+            {{#with album}}
+                <nav class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <div>
+                                <h1 class="title">
+                                    {{this.title}}
+                                </h1>
+                                <h3>
+                                    {{#with this.description}}
+                                        {{this}}
+                                    {{else}}
+                                        No description provided
+                                    {{/with}}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <div>
+                                <p class="heading">
+                                    by {{this.owner.fullName}}
+                                </p>
+                                <p class="title">
+                                    {{countPhotos}} photos
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <hr>
+                <button class="button is-success js-upload">
+                    Upload photos
+                </button>
+                <div class="gallery">
+                    {{#each fakePhotos}}
+                        <div class="gallery__item">
+                            <img class="image" src="{{src}}" alt="lel">
+                        </div>
+                    {{/each}}
+                </div>
+            {{else}}
+                <h1 class="title has-text-centered">
+                    Album not found :/
+                </h1>
+            {{/with}}
+        </div>
+    </section>
+</template>

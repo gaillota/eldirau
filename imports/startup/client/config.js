@@ -4,7 +4,7 @@ import {AutoForm} from 'meteor/aldeed:autoform';
 import {sAlert} from "meteor/juliancwirko:s-alert";
 import {NProgress} from 'meteor/mrt:nprogress';
 
-import NotificationService from '../services/notification.service.js';
+import {NotificationService} from '../services/notification.service.js';
 
 // SimpleSchema errors overridden
 SimpleSchema.messages({

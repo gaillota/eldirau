@@ -6,9 +6,13 @@ import './index.html';
 
 const templateName = "rea.index";
 
+Template[templateName].onCreated(function () {
+    this.subscribe('albums.index');
+});
+
 Template[templateName].helpers({
-    lastAlbums() {
-        Albums.find({}, {
+    albums() {
+        return Albums.find({}, {
             sort: {
                 createAt: -1
             }

@@ -2,7 +2,7 @@ import {Template} from 'meteor/templating';
 
 import './components/navbar.component';
 import './components/loading.component';
-import './rea/albums/modals/create';
+import './rea/albums/modals/create.modal';
 
 import './layout.html';
 

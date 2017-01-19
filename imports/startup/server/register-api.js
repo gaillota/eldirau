@@ -1,4 +1,15 @@
 /**
+ * Albums API
+ */
+import '../../api/albums/methods';
+import '../../api/albums/server/publications';
+
+/**
+ * Photos API
+ */
+import '../../api/photos/methods';
+import '../../api/photos/server/publications';
+/**
  * Users API
  */
 import '../../api/users/methods';

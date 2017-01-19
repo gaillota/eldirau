@@ -4,7 +4,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveDict} from 'meteor/reactive-dict';
 
 import NotificationService from '../../startup/services/notification.service.js';
-import {showModal} from '../../startup/utilities'
+import {triggerModal} from '../../startup/utilities'
 
 import './navbar.component.html';
 
@@ -30,7 +30,7 @@ Template["navbar"].events({
     'click .js-create-album'(event) {
         event.preventDefault();
 
-        showModal('createAlbumModal');
+        triggerModal('createAlbumModal', true);
     },
     'click .js-logout'(event) {
         event.preventDefault();
@@ -39,7 +39,7 @@ Template["navbar"].events({
             if (error) {
                 NotificationService.error(error.toString());
             } else {
-                FlowRouter.go('public.index');
+                FlowRouter.go('public.auth.login');
             }
         });
     }
