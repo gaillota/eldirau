@@ -75,7 +75,6 @@ momentjs:moment
 jparker:crypto-md5
 
 # testing
-browser-policy
 
 # production
 standard-minifier-css

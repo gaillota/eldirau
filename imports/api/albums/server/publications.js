@@ -48,7 +48,7 @@ Meteor.publishComposite('album', (albumId) => {
             }
 
             Counts.publish(this, 'album.photos.count', Photos.find({
-                albumId
+                "meta.albumId": albumId
             }).cursor);
 
             return Albums.find(albumId);

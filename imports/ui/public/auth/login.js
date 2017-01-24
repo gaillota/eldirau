@@ -27,7 +27,6 @@ AutoForm.addHooks(templateName, {
         if (Meteor.user()) {
             NotificationService.success("Welcome back " + Meteor.user().profile.firstName + " ! :)");
         }
-        const next = getDispatcherPath() || 'rea.index';
-        FlowRouter.go(next);
+        FlowRouter.go(getDispatcherPath() || 'rea.index');
     }
 });

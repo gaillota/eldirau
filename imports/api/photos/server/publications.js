@@ -10,7 +10,7 @@ Meteor.publishComposite('photos.album', (albumId, limit = 20) => {
             }
 
             return Photos.find({
-                albumId
+                "meta.albumId": albumId
             }, {
                 limit
             }).cursor;

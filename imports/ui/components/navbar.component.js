@@ -4,7 +4,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveDict} from 'meteor/reactive-dict';
 
 import NotificationService from '../../startup/services/notification.service.js';
-import {triggerModal} from '../../startup/utilities'
+import {toggleModal} from '../../startup/utilities'
 
 import './navbar.component.html';
 
@@ -30,7 +30,7 @@ Template["navbar"].events({
     'click .js-create-album'(event) {
         event.preventDefault();
 
-        triggerModal('createAlbumModal', true);
+        toggleModal('album.modal', true);
     },
     'click .js-logout'(event) {
         event.preventDefault();

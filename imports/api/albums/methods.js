@@ -2,53 +2,40 @@ import {ValidatedMethod} from 'meteor/mdg:validated-method';
 
 import {Albums} from './albums';
 import {Photos} from '../photos/photos';
-import {CreateAlbumForm} from "../../startup/common/forms/albums/create.form";
+import {AlbumForm} from "../../startup/common/forms/albums/album.form";
 
 const mixins = ValidatedMethod.mixins;
 
-export const create = new ValidatedMethod({
-    name: 'albums.create',
+export const upsert = new ValidatedMethod({
+    name: 'albums.upsert',
     mixins: [mixins.isLoggedIn, mixins.checkSchema],
-    schema: CreateAlbumForm,
-    run({title, description}) {
-        return Albums.insert({
-            title,
-            description,
-            ownerId: this.userId
-        })
-    }
-});
-
-export const update = new ValidatedMethod({
-    name: 'albums.update',
-    mixins: [mixins.isLoggedIn, mixins.checkSchema, mixins.restrict, mixins.provide],
-    schema: {
+    schema: [AlbumForm, {
         albumId: {
             type: String,
-            regEx: SimpleSchema.RegEx.Id
-        },
-        title: {
-            type: String
+            regEx: SimpleSchema.RegEx.Id,
+            optional: true
         }
-    },
-    provide: function({albumId}) {
-        return Albums.findOne(albumId);
-    },
-    restrictions: [
-        {
-            condition: function(args, album) {
-                return album.ownerId === this.userId;
-            },
-            error: function() {
-                return new Meteor.Error("not-authorized", "You can only update your albums");
+    }],
+    run({name, description, albumId}) {
+        if (albumId) {
+            const album = Albums.findOne(albumId);
+
+            if (album.ownerId !== this.userId) {
+                throw new Meteor.Error("not-authorized", "You can only edit your own albums");
             }
+
+            return Albums.update(albumId, {
+                $set: {
+                    name,
+                    description
+                }
+            });
         }
-    ],
-    run({albumId, title}) {
-        Albums.update(albumId, {
-            $set: {
-                title
-            }
+
+        return Albums.insert({
+            name,
+            description,
+            ownerId: this.userId
         });
     }
 });
@@ -68,7 +55,7 @@ export const remove = new ValidatedMethod({
     restrictions: [
         {
             condition: function(args, album) {
-                return album.ownerId === this.userId;
+                return album.ownerId !== this.userId;
             },
             error: function() {
                 return new Meteor.Error("not-authorized", "You can only delete your albums");
@@ -76,8 +63,12 @@ export const remove = new ValidatedMethod({
         }
     ],
     run({albumId}) {
-        Photos.remove({
+        Photos.update({
             albumId: albumId
+        }, {
+            $set: {
+                "meta.deletedAt": new Date()
+            }
         }, {
             multi: true
         });

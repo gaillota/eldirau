@@ -2,6 +2,7 @@ import {sAlert} from "meteor/juliancwirko:s-alert";
 
 export const NotificationService = (function () {
     let functions = {};
+    const types = 'success info warning error'.split(' ');
 
     const computeTimeout = (text) => {
         const wpm = 200;
@@ -13,7 +14,7 @@ export const NotificationService = (function () {
         return Math.max(time, minTime);
     };
 
-    _.each('success info warning error'.split(' '), (type) => {
+    types.forEach(type => {
         functions[type] = (message, options = {}) => {
             options.timeout = computeTimeout(message);
             sAlert[type](message, options);

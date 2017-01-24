@@ -31,9 +31,6 @@ SimpleSchema.messages({
     maxAgeError: "The max age field must be above the min age."
 });
 
-// Set the blaze root node to body
-BlazeLayout.setRoot('body');
-
 // Autoform error hook
 AutoForm.addHooks(null, {
     onError: function (formType, error) {

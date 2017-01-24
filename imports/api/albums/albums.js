@@ -19,7 +19,7 @@ Albums.deny({
 });
 
 Albums.schema = new SimpleSchema({
-    title: {
+    name: {
         type: String,
         max: 60
     },
@@ -54,7 +54,7 @@ Albums.helpers({
     },
     photos() {
         return Photos.find({
-            albumId: this._id
+            // "meta.albumId": this._id
         }).cursor;
     }
 });

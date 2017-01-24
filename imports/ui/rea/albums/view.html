@@ -10,14 +10,10 @@
                         <div class="level-item">
                             <div>
                                 <h1 class="title">
-                                    {{this.title}}
+                                    {{this.name}}
                                 </h1>
                                 <h3>
-                                    {{#with this.description}}
-                                        {{this}}
-                                    {{else}}
-                                        No description provided
-                                    {{/with}}
+                                    {{description}}
                                 </h3>
                             </div>
                         </div>
@@ -36,16 +32,75 @@
                     </div>
                 </nav>
                 <hr>
-                <button class="button is-success js-upload">
-                    Upload photos
-                </button>
+                {{#if canManage}}
+                    <div class="columns">
+                        <div class="column is-9" style="max-height: 173px; overflow-y: auto; overflow-x: hidden;">
+                            {{#each pendingFiles}}
+                                {{toJson this}}
+                                <div class="columns">
+                                    <div class="column">
+                                        {{file.name}}
+                                    </div>
+                                    <div class="column">
+                                        <progress class="progress is-success" value="{{progress}}"
+                                                  max="100">{{progress}}%
+                                        </progress>
+                                    </div>
+                                    <div class="column">
+                                        50 Mo/s
+                                    </div>
+                                    <div class="column">
+                                        23 sec. left
+                                    </div>
+                                    <div class="column">
+                                        <p class="control">
+                                            <button class="button">
+                                                <span class="icon is-small">
+                                                    <i class="fa fa-pause"></i>
+                                                </span>
+                                            </button>
+                                            <button class="button">
+                                                <span class="icon is-small">
+                                                    <i class="fa fa-stop"></i>
+                                                </span>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                        <div class="column is-3">
+                            <div class="box">
+                                <p class="control">
+                                    <label for="photos" class="button is-success is-fullwidth">
+                                        Upload photos
+                                        <input type="file" id="photos" multiple hidden>
+                                    </label>
+                                </p>
+                                <p class="control">
+                                    <button class="button is-warning is-fullwidth js-edit">
+                                        Edit album
+                                    </button>
+                                </p>
+                                <p class="control">
+                                    <button class="button is-danger is-fullwidth js-remove">
+                                        Remove album
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
                 <div class="gallery">
-                    {{#each fakePhotos}}
+                    {{#each photo in this.photos}}
                         <div class="gallery__item">
-                            <img class="image" src="{{src}}" alt="lel">
+                            <img src="{{fileURL photo}}" alt="{{photo.name}}">
                         </div>
                     {{/each}}
                 </div>
+                {{#if hasMore}}
+                    <button class="button js-load-more">Load more</button>
+                {{/if}}
             {{else}}
                 <h1 class="title has-text-centered">
                     Album not found :/

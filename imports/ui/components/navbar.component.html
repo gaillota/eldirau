@@ -1,6 +1,6 @@
 <template name="navbar">
-    <section class="hero is-light">
-        <div class="hero-header">
+    <section class="hero">
+        <div class="hero-head">
             <nav class="nav">
                 <div class="container">
                     <div class="nav-left">
@@ -8,9 +8,13 @@
                             {{> logo}}
                         </a>
                         {{#if currentUser}}
-                            <a href="#" class="nav-item js-create-album">
-                                New album
-                            </a>
+                            <!--{{#if hasRole 'ALBUM'}}-->
+                                <span class="nav-item">
+                                    <a href="#" class="button is-primary js-create-album">
+                                        New album
+                                    </a>
+                                </span>
+                            <!--{{/if}}-->
                         {{/if}}
                     </div>
                     <!-- Brand and toggle get grouped for better mobile display -->
@@ -22,11 +26,7 @@
 
                     <div class="nav-right nav-menu {{active}}">
                         {{#with currentUser}}
-                            <a href="{{pathFor 'rea.profile.index'}}"
-                               class="nav-item {{isActiveRoute regex='profile'}}">
-                                {{> icon name='user' size='is-small'}}
-                                <span>{{fullName}}</span>
-                            </a>
+                            <span class="nav-item">{{fullName}}</span>
                             <a class="nav-item js-logout" href="#">{{> icon name='sign-out' size='is-small'}}</a>
                         {{else}}
                             <a href="{{pathFor 'public.auth.login'}}" class="nav-item">

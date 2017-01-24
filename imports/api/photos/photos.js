@@ -11,11 +11,11 @@ export const Photos = new FilesCollection({
         if (file.size <= 10485760 && isImage(file)) {
             return true;
         }
-        return 'Please upload image, with size equal or less than 10MB';
+        return 'Please upload an image, with size equal or less than 10MB';
     },
 });
 
-const isImage = file => file.type.indexOf("image") === 0 && /png|jpg|jpeg/i.test(file.extension);
+const isImage = file => file.type.indexOf("image") === 0 && /png|jpg|jpeg|gif/i.test(file.extension);
 
 if (Meteor.isServer) {
     Photos.deny({
@@ -32,12 +32,18 @@ if (Meteor.isServer) {
 }
 
 const schema = _extend(Photos.schema, {
-    albumId: {
+    "meta.albumId": {
         type: String,
         regEx: SimpleSchema.RegEx.Id
     },
-    title: {
-        type: String
+    "meta.description": {
+        type: String,
+        max: 255,
+        optional: true
+    },
+    "meta.deletedAt": {
+        type: Date,
+        optional: true
     }
 });
 

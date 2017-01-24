@@ -3,13 +3,22 @@ import {Template} from 'meteor/templating';
 import {moment} from 'meteor/momentjs:moment';
 import {_} from 'lodash';
 
-import {hasRole, formatDate, formatDateRelative, formatDateChat} from '../utilities';
+import {hasRole, formatDate, formatDateRelative} from '../utilities';
 
 const helpers = {
+    hasRole,
     formatDate,
     formatDateRelative,
-    formatDateChat,
-    hasRole,
+    _(...args) {
+        if (!args.length) {
+            return;
+        }
+
+        const name = args[0];
+        args.shift();
+
+        return _[name].apply(_, args);
+    },
     fa(icon) {
         return '<i class="fa fa-' + icon + '"></i>';
     },
