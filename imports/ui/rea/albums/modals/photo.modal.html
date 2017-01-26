@@ -1,0 +1,19 @@
+<template name="rea.photo-view.modal">
+    <div class="modal is-active">
+        <div class="modal-background js-close"></div>
+        <div class="modal-content">
+            <p class="previous">
+                &lsaquo;
+            </p>
+            <p class="image is-4by3">
+                {{#each photo in photos}}
+                    <img src="{{fileURL photo}}" alt="{{photo.name}}">
+                {{/each}}
+            </p>
+            <p class="next">
+                &rsaquo;
+            </p>
+        </div>
+        <button class="modal-close js-close"></button>
+    </div>
+</template>
