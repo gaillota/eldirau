@@ -2,7 +2,7 @@ import {ValidatedMethod} from 'meteor/mdg:validated-method';
 
 import {Albums} from './albums';
 import {Photos} from '../photos/photos';
-import {AlbumForm} from "../../startup/common/forms/albums/album.form";
+import {form as AlbumForm} from "../../startup/common/forms/albums/album.form";
 
 const mixins = ValidatedMethod.mixins;
 
@@ -74,5 +74,40 @@ export const remove = new ValidatedMethod({
         });
 
         return Albums.remove(albumId);
+    }
+});
+
+export const share = new ValidatedMethod({
+    name: 'albums.share',
+    mixins: [mixins.isLoggedIn, mixins.checkSchema, mixins.restrict, mixins.provide],
+    schema: {
+        albumId: {
+            type: String,
+            regEx: SimpleSchema.RegEx.Id
+        },
+        usersIds: {
+            type: [String],
+            regEx: SimpleSchema.RegEx.Id
+        }
+    },
+    provide: function({albumId}) {
+        return Albums.findOne(albumId);
+    },
+    restrictions: [
+        {
+            condition: function(args, album) {
+                return album.ownerId !== this.userId;
+            },
+            error: function() {
+                return new Meteor.Error("not-authorized", "You can only share your albums");
+            }
+        }
+    ],
+    run({albumId, usersIds}) {
+        return Albums.update(albumId, {
+            $set: {
+                grantedUsersIds: usersIds
+            }
+        });
     }
 });

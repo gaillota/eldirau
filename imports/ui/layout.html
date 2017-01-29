@@ -8,6 +8,12 @@
         {{> Template.dynamic template=page}}
     {{/if}}
 
+    {{#each albumId in albumIdsUpload}}
+        <div class="uploader-container">
+            {{> uploader albumId=albumId}}
+        </div>
+    {{/each}}
+
     <!-- Alerts component-->
     {{> sAlert}}
 

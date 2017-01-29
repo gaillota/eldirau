@@ -3,6 +3,7 @@ import {Template} from 'meteor/templating';
 import {moment} from 'meteor/momentjs:moment';
 import {_} from 'lodash';
 
+import {GravatarService} from '../services/gravatar.service';
 import {hasRole, formatDate, formatDateRelative} from '../utilities';
 
 const helpers = {
@@ -84,6 +85,9 @@ const helpers = {
     },
     genderIconName(gender) {
         return gender == 'female' ? 'venus' : 'mars';
+    },
+    gravatarUrl(email = Meteor.user().emails[0].address) {
+        return GravatarService.getUrl(email);
     }
 };
 

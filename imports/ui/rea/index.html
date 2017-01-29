@@ -3,56 +3,39 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-2">
-                    <aside class="menu">
-                        <p class="menu-label">
-                            General
-                        </p>
-                        <ul class="menu-list">
-                            <li><a>Albums</a></li>
-                            <li><a>Something else</a></li>
-                        </ul>
-                    </aside>
+                    {{> sidemenu}}
                 </div>
                 <div class="column">
-                    <h1 class="title">Albums</h1>
-                    <h3 class="subtitle">Last 0 albums created</h3>
-                    <div class="columns is-multiline">
-                    {{#each album in albums}}
-                        <div class="column is-4">
-                            <div class="card">
-                                <div class="card-image">
-                                    <figure class="image is-4by3">
-                                        <a href="{{pathFor 'rea.albums.view' albumId=album._id}}">
-                                            <img src="http://bulma.io/images/placeholders/1280x960.png" alt="Image">
-                                        </a>
-                                    </figure>
-                                </div>
-                                <div class="card-content">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <figure class="image" style="height: 40px; width: 40px;">
-                                                <img src="http://bulma.io/images/placeholders/96x96.png" alt="Image">
-                                            </figure>
-                                        </div>
-                                        <div class="media-content">
-                                            <p class="title is-4">{{album.title}}</p>
-                                            <p class="subtitle is-6">@johnsmith</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="content">
-                                        {{#with album.description}}
-                                            <em>{{this}}</em>
-                                        {{else}}
-                                            <em>No description provided</em>
-                                        {{/with}}
-                                        <br>
-                                        <small>{{formatDate album.createdAt}}</small>
-                                    </div>
-                                </div>
+                    <h1 class="title">My Albums</h1>
+                    <h3 class="subtitle">Last {{count myAlbums}} albums</h3>
+                    <div class="columns">
+                        {{#each album in myAlbums}}
+                            <div class="column is-4">
+                                {{> Template.dynamic template="rea.albums.card" album=album}}
                             </div>
-                        </div>
-                    {{/each}}
+                        {{else}}
+                            <div class="column has-text-centered">
+                                <p class="title is-6">
+                                    You don't have any albums
+                                </p>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <hr>
+                    <h1 class="title">Shared with me</h1>
+                    <h3 class="subtitle">Last {{count albumsSharedWithMe}} albums</h3>
+                    <div class="columns">
+                        {{#each album in albumsSharedWithMe}}
+                            <div class="column is-4">
+                                {{> Template.dynamic template="rea.albums.card" data=album}}
+                            </div>
+                        {{else}}
+                            <div class="column has-text-centered">
+                                <p class="title is-6">
+                                    No one shared an album with you.
+                                </p>
+                            </div>
+                        {{/each}}
                     </div>
                 </div>
             </div>

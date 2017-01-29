@@ -1,19 +1,9 @@
 .modal {
-    align-items: flex-start !important;
-    padding-top: 50px;
-    top: -20px !important;
-    transition: all 1s ease-in;
-
-    &.is-active {
-        top: 0 !important;
-
-        .modal-content {
-            opacity: 1;
-        }
+    .modal-content.is-rounded {
+        .border-radius(5px);
     }
 
-    .modal-content {
-        opacity: 0;
-        transition: all 1s ease-in;
+    .modal-card.is-rounded {
+        .border-radius(5px);
     }
 }

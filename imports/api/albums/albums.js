@@ -38,10 +38,21 @@ Albums.schema = new SimpleSchema({
             if (this.isInsert && !this.isSet) {
                 return new Date();
             }
-        }
+        },
+        denyUpdate: true
     },
     updatedAt: {
         type: Date,
+        optional: true
+    },
+    previewId: {
+        type: String,
+        regEx: SimpleSchema.RegEx.Id,
+        optional: true
+    },
+    grantedUsersIds: {
+        type: [String],
+        regEx: SimpleSchema.RegEx.Id,
         optional: true
     }
 });
@@ -52,9 +63,17 @@ Albums.helpers({
     owner() {
         return Meteor.users.findOne(this.ownerId);
     },
-    photos() {
-        return Photos.find({
-            // "meta.albumId": this._id
-        }).cursor;
+    preview() {
+        return this.previewId ? Photos.collection.find(this.previewId) : this.photos(1);
+    },
+    photos(limit = 0) {
+        return Photos.collection.find({
+            "meta.albumId": this._id
+        }, {
+            sort: {
+                "meta.uploadedAt": -1
+            },
+            limit
+        });
     }
 });

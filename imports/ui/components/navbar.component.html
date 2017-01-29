@@ -26,6 +26,9 @@
 
                     <div class="nav-right nav-menu {{active}}">
                         {{#with currentUser}}
+                            <a class="nav-item">
+                                <img src="{{gravatarUrl}}" alt="gravatar">
+                            </a>
                             <span class="nav-item">{{fullName}}</span>
                             <a class="nav-item js-logout" href="#">{{> icon name='sign-out' size='is-small'}}</a>
                         {{else}}

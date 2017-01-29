@@ -36,6 +36,15 @@ const schema = _extend(Photos.schema, {
         type: String,
         regEx: SimpleSchema.RegEx.Id
     },
+    "meta.uploadedAt": {
+        type: Date,
+        autoValue: function () {
+            if (this.isInsert && !this.isSet) {
+                return Date.now();
+            }
+        },
+        denyUpdate: true
+    },
     "meta.description": {
         type: String,
         max: 255,

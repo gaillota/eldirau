@@ -1,8 +1,9 @@
 import {Template} from "meteor/templating";
+import {AutoForm} from 'meteor/aldeed:autoform';
 import {_} from 'lodash';
 
 import {Albums} from '../../../../api/albums/albums';
-import {AlbumForm} from '../../../../startup/common/forms/albums/album.form'
+import {form as AlbumForm} from '../../../../startup/common/forms/albums/album.form'
 import {upsert} from '../../../../api/albums/methods';
 import {getModalData, toggleModal} from '../../../../startup/utilities';
 

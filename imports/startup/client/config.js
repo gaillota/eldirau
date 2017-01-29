@@ -31,6 +31,8 @@ SimpleSchema.messages({
     maxAgeError: "The max age field must be above the min age."
 });
 
+AutoForm.setDefaultTemplate('plain');
+
 // Autoform error hook
 AutoForm.addHooks(null, {
     onError: function (formType, error) {

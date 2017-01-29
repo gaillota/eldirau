@@ -1,0 +1,69 @@
+.uploader-container {
+    position: fixed;
+    right: 0;
+    bottom: -1px;
+    padding: 0 50px;
+    display: flex;
+    flex-flow: row-reverse wrap;
+
+    .uploader {
+        width: 600px;
+        max-height: 300px;
+        margin-top: 10px;
+        margin-left: 10px;
+        background: white;
+        border-radius: 5px 5px 0 0;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+
+        &__header {
+            flex-grow: 0;
+            display: flex;
+            flex-direction: row;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+
+            .heading_title {
+                flex-grow: 1;
+                font-size: 1.1rem;
+
+                .album_name {
+                    font-style: italic;
+                }
+            }
+
+            button.reduce {
+                flex-grow: 0;
+                border: 0;
+            }
+        }
+
+        &__body {
+            flex-grow: 1;
+
+            &.is-hidden {
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+
+            &__content {
+                padding: 10px;
+
+                table tbody tr td:nth-child(2) {
+                    vertical-align: middle;
+                }
+            }
+
+            &__footer {
+                flex-grow: 0;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                padding: 8px 12px;
+                border-top: 1px solid rgba(0, 0, 0, 0.3);
+            }
+        }
+    }
+}

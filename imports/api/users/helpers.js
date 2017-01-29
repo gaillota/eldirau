@@ -1,7 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 
+import {capitalize} from '../../startup/utilities';
+
 Meteor.users.helpers({
     fullName() {
-        return `${this.profile.firstName} ${this.profile.lastName}`;
+        return `${capitalize(this.profile.firstName)} ${capitalize(this.profile.lastName)}`;
     }
 });

@@ -15,7 +15,9 @@ export const register = new ValidatedMethod({
     schema: [RegistrationForm],
     run(doc) {
         let options = _.pick(doc, 'email password'.split(' '));
-        options.profile = _.pick(doc, 'firstName lastName'.split(' '));
+        options.profile = {};
+        options.profile.firstName = doc.firstName.toLowerCase();
+        options.profile.lastName = doc.lastName.toLowerCase();
 
         // Create new user
         const newUserId = Accounts.createUser(options);

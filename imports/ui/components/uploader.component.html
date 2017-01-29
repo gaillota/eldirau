@@ -1,0 +1,70 @@
+<template name="uploader">
+    <div class="uploader">
+        <form>
+            <input type="file" id="photos" multiple hidden>
+        </form>
+        <div class="uploader__header">
+            <div class="heading_title">Uploading to <span class="album_name">{{albumId}}</span></div>
+            <button class="button is-small reduce">
+                <span class="icon is-small">
+                    <i class="fa fa-{{reduceIcon}}"></i>
+                </span>
+            </button>
+        </div>
+        <div class="uploader__body {{hidden}}">
+            <div class="uploader__body__content">
+                <table class="table is-narrow">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th style="min-width: 200px;">Progress</th>
+                        <th>Speed</th>
+                        <th>Time remaining</th>
+                        <!--<th>Actions</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>bduzq.jpeg</td>
+                        <td>
+                            <progress class="progress is-success" value="55" max="100">55%</progress>
+                        </td>
+                        <td>1,5 Mo/s</td>
+                        <td>5 secs. left</td>
+                        <!--<td>-->
+                        <!--<button class="button is-small js-pause">-->
+                        <!--<span class="icon is-small">-->
+                        <!--<i class="fa fa-pause"></i>-->
+                        <!--</span>-->
+                        <!--</button>-->
+                        <!--<button class="button is-small js-cancel">-->
+                        <!--<span class="icon is-small">-->
+                        <!--<i class="fa fa-stop"></i>-->
+                        <!--</span>-->
+                        <!--</button>-->
+                        <!--</td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="uploader__body__footer">
+                <div class="control is-grouped">
+                    <p class="control">
+                        <button class="button is-small">
+                        <span class="icon is-small">
+                            <i class="fa fa-pause"></i>
+                        </span>
+                        </button>
+                    </p>
+                    <p class="control">
+                        <button class="button is-danger is-small">
+                        <span class="icon is-small">
+                            <i class="fa fa-stop"></i>
+                        </span>
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

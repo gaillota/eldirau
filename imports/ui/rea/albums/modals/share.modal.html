@@ -1,0 +1,55 @@
+<template name="rea.albums.share.modal">
+    <div class="modal {{isActive}}">
+        <div class="modal-background js-hide-modal"></div>
+        <div class="modal-card is-rounded">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    Partager l'album {{album.name}}
+                </p>
+                <button class="delete js-hide-modal"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <p class="control has-addons">
+                                <input class="input js-search-input" type="text" placeholder="Find a user">
+                                <button class="button js-search">
+                                    Search
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {{#each users}}
+                    <div class="level js-toggle-share" style="cursor:pointer;">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <figure class="image is-32x32">
+                                    <img src="{{gravatarUrl this.emails.[0].address}}" alt="{{this.fullName}}">
+                                </figure>
+                            </div>
+                            <div class="level-item">
+                                <p class="subtitle is-5">
+                                    <strong>{{this.fullName}}</strong>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="level-right">
+                            <p class="control">
+                                <label for="{{this._id}}_shared" class="checkbox">
+                                    <input type="checkbox" id="{{this._id}}" checked="{{checked}}">
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                {{/each}}
+            </section>
+            <footer class="modal-card-foot">
+                <button type="button" class="button is-primary js-save">Save changes</button>
+                <button type="button" class="button js-hide-modal">Cancel</button>
+            </footer>
+        </div>
+    </div>
+</template>

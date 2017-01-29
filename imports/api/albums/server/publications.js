@@ -3,15 +3,16 @@ import {Counts} from "meteor/tmeasday:publish-counts";
 
 import {Albums} from "../albums";
 import {Photos} from "../../photos/photos";
+import {AlbumManager} from '../../../startup/services/album.manager';
 
-Meteor.publishComposite('albums.index', (limit = 5) => {
+Meteor.publishComposite('albums.user', (limit = 3) => {
     return {
         find() {
             if (!this.userId) {
                 return this.ready();
             }
 
-            return Albums.find({}, {
+            return AlbumManager.findUserAlbums(this.userId, {}, {
                 sort: {
                     createdAt: -1
                 },
@@ -21,14 +22,36 @@ Meteor.publishComposite('albums.index', (limit = 5) => {
         children: [
             {
                 find(album) {
-                    return Photos.find({
-                        albumId: album._id
-                    }, {
-                        sort: {
-                            updatedAt: -1
-                        },
-                        limit: 1
-                    }).cursor;
+                    return album.preview();
+                }
+            },
+            {
+                find(album) {
+                    return Meteor.users.find(album.ownerId);
+                }
+            }
+        ]
+    }
+});
+
+Meteor.publishComposite('albums.shared', (limit = 3) => {
+    return {
+        find() {
+            if (!this.userId) {
+                return this.ready();
+            }
+
+            return AlbumManager.findAlbumsSharedWithUser(this.userId, {}, {
+                sort: {
+                    createdAt: -1
+                },
+                limit
+            });
+        },
+        children: [
+            {
+                find(album) {
+                    return album.preview();
                 }
             },
             {
@@ -47,9 +70,12 @@ Meteor.publishComposite('album', (albumId) => {
                 return this.ready();
             }
 
-            Counts.publish(this, 'album.photos.count', Photos.find({
-                "meta.albumId": albumId
-            }).cursor);
+            Counts.publish(this, 'album.photos.count', Photos.collection.find({
+                "meta.albumId": albumId,
+                "meta.deletedAt": {
+                    $exists: false
+                }
+            }));
 
             return Albums.find(albumId);
         },
@@ -60,5 +86,46 @@ Meteor.publishComposite('album', (albumId) => {
                 }
             }
         ]
+    }
+});
+
+Meteor.publishComposite('album.share', (albumId) => {
+    return {
+        find() {
+            return Albums.find(albumId, {}, {
+                fields: {
+                    name: 1,
+                    grantedUsersIds: 1
+                }
+            });
+        }
+    }
+});
+
+Meteor.publishComposite('my.albums.count', () => {
+    return {
+        find() {
+            if (!this.userId) {
+                return this.ready();
+            }
+
+            Counts.publish(this, 'my.albums.count', AlbumManager.findUserAlbums(this.userId));
+
+            return this.ready();
+        }
+    }
+});
+
+Meteor.publishComposite('shared.albums.count', () => {
+    return {
+        find() {
+            if (!this.userId) {
+                return this.ready();
+            }
+
+            Counts.publish(this, 'shared.albums.count', AlbumManager.findAlbumsSharedWithUser(this.userId));
+
+            return this.ready();
+        }
     }
 });

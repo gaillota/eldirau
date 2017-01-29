@@ -1,111 +1,80 @@
 <template name="rea.albums.view">
     <section class="section">
         <div class="container">
-            {{#unless subsReady}}
+            {{#unless Template.subscriptionsReady}}
                 {{> loading}}
-            {{/unless}}
-            {{#with album}}
-                <nav class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <div>
-                                <h1 class="title">
-                                    {{this.name}}
-                                </h1>
-                                <h3>
-                                    {{description}}
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="level-right">
-                        <div class="level-item">
-                            <div>
-                                <p class="heading">
-                                    by {{this.owner.fullName}}
-                                </p>
-                                <p class="title">
-                                    {{countPhotos}} photos
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-                <hr>
-                {{#if canManage}}
-                    <div class="columns">
-                        <div class="column is-9" style="max-height: 173px; overflow-y: auto; overflow-x: hidden;">
-                            {{#each pendingFiles}}
-                                {{toJson this}}
-                                <div class="columns">
-                                    <div class="column">
-                                        {{file.name}}
-                                    </div>
-                                    <div class="column">
-                                        <progress class="progress is-success" value="{{progress}}"
-                                                  max="100">{{progress}}%
-                                        </progress>
-                                    </div>
-                                    <div class="column">
-                                        50 Mo/s
-                                    </div>
-                                    <div class="column">
-                                        23 sec. left
-                                    </div>
-                                    <div class="column">
-                                        <p class="control">
-                                            <button class="button">
-                                                <span class="icon is-small">
-                                                    <i class="fa fa-pause"></i>
-                                                </span>
-                                            </button>
-                                            <button class="button">
-                                                <span class="icon is-small">
-                                                    <i class="fa fa-stop"></i>
-                                                </span>
-                                            </button>
-                                        </p>
-                                    </div>
-                                </div>
-                            {{/each}}
-                        </div>
-                        <div class="column is-3">
-                            <div class="box">
-                                <p class="control">
-                                    <label for="photos" class="button is-success is-fullwidth">
-                                        Upload photos
-                                        <input type="file" id="photos" multiple hidden>
-                                    </label>
-                                </p>
-                                <p class="control">
-                                    <button class="button is-warning is-fullwidth js-edit">
-                                        Edit album
-                                    </button>
-                                </p>
-                                <p class="control">
-                                    <button class="button is-danger is-fullwidth js-remove">
-                                        Remove album
-                                    </button>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                {{/if}}
-                <div class="gallery">
-                    {{#each photo in this.photos}}
-                        <div class="gallery__item">
-                            <img src="{{fileURL photo}}" alt="{{photo.name}}">
-                        </div>
-                    {{/each}}
-                </div>
-                {{#if hasMore}}
-                    <button class="button js-load-more">Load more</button>
-                {{/if}}
             {{else}}
-                <h1 class="title has-text-centered">
-                    Album not found :/
-                </h1>
-            {{/with}}
+                {{#with album}}
+                    <nav class="level">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <div>
+                                    <h1 class="title">
+                                        {{this.name}}
+                                    </h1>
+                                    <h3 class="subtitle" style="margin-top: 5px;">
+                                        {{description}}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <div>
+                                    <p class="heading">
+                                        by {{this.owner.fullName}}
+                                    </p>
+                                    <p class="title">
+                                        {{countPhotos}} photos
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <hr>
+                    {{#if canManage}}
+                        <div class="control is-grouped is-pulled-right">
+                            <p class="control">
+                                <label for="photos" class="button is-success">
+                                    Upload photos
+                                    <input type="file" id="photos" multiple hidden>
+                                </label>
+                            </p>
+                            <p class="control">
+                                <button class="button is-info js-share-album">
+                                    Share
+                                </button>
+                            </p>
+                            <p class="control">
+                                <button class="button is-warning js-edit-album">
+                                    Edit album
+                                </button>
+                            </p>
+                            <p class="control">
+                                <button class="button is-danger js-remove-album">
+                                    Remove album
+                                </button>
+                            </p>
+                        </div>
+                        <div class="is-clearfix"></div>
+                    {{/if}}
+                    <div class="gallery">
+                        {{#each photo in this.photos}}
+                            <div class="gallery__item" style="background-image: url({{fileURL photo}});">
+                                <a href="{{pathFor 'rea.albums.photo.view' albumId=_id photoId=photo._id}}">
+                                </a>
+                            </div>
+                        {{/each}}
+                    </div>
+                {{else}}
+                    <h1 class="title has-text-centered">
+                        Album not found :/
+                    </h1>
+                {{/with}}
+            {{/unless}}
         </div>
     </section>
+    {{#if photoView}}
+        {{> Template.dynamic template="rea.photo.modal"}}
+    {{/if}}
 </template>

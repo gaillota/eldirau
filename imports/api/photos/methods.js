@@ -12,27 +12,32 @@ export const update = new ValidatedMethod({
             type: String,
             regEx: SimpleSchema.RegEx.Id
         },
-        title: {
+        name: {
             type: String
+        },
+        description: {
+            type: String,
+            optional: true
         }
     },
     provide: function({photoId}) {
-        return Photos.findOne(photoId);
+        return Photos.collection.findOne(photoId);
     },
     restrictions: [
         {
             condition: function(args, photo) {
-                return photo.ownerId === this.userId;
+                return photo.userId !== this.userId;
             },
             error: function() {
-                return new Meteor.Error("not-authorized", "You can onyl update your photos");
+                return new Meteor.Error("not-authorized", "You can only update your own photos");
             }
         }
     ],
-    run({photoId, title}) {
+    run({photoId, name, description}) {
         return Photos.update(photoId, {
             $set: {
-                title: title
+                "meta.name": name,
+                "meta.description": description
             }
         });
     }
@@ -48,19 +53,23 @@ export const remove = new ValidatedMethod({
         },
     },
     provide: function({photoId}) {
-        return Photos.findOne(photoId);
+        return Photos.collection.findOne(photoId);
     },
     restrictions: [
         {
             condition: function(args, photo) {
-                return photo.ownerId === this.userId;
+                return photo.userId !== this.userId;
             },
             error: function() {
-                return new Meteor.Error("not-authorized", "You can onyl update your photos");
+                return new Meteor.Error("not-authorized", "You can only update your photos");
             }
         }
     ],
     run({photoId}) {
-        return Photos.remove(photoId);
+        return Photos.update(photoId, {
+            $set: {
+                "meta.deletedAt": new Date()
+            }
+        });
     }
 });

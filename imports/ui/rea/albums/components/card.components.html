@@ -1,0 +1,40 @@
+<template name="rea.albums.card">
+    <div class="card">
+        <div class="card-image">
+            <figure class="image is-4by3">
+                <a href="{{pathFor 'rea.albums.view' albumId=this._id}}">
+                    {{#each photo in this.preview}}
+                        <img src="{{fileURL photo}}" alt="{{this.name}}_preview">
+                    {{/each}}
+                </a>
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image" style="width: 40px;height: 40px;">
+                        <img src="{{gravatarUrl this.owner.emails.[0].address}}" alt="gravatar">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4">
+                        <a href="{{pathFor 'rea.albums.view' albumId=this._id}}">
+                            {{this.name}}
+                        </a>
+                    </p>
+                    <p class="subtitle is-6">{{this.owner.fullName}}</p>
+                </div>
+            </div>
+
+            <div class="content">
+                {{#with this.description}}
+                    <em>{{this}}</em>
+                {{else}}
+                    <em>No description provided</em>
+                {{/with}}
+                <br>
+                <small>{{formatDate this.createdAt 'HH:mm - D MMMM YYYY'}}</small>
+            </div>
+        </div>
+    </div>
+</template>
