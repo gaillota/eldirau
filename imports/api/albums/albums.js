@@ -1,5 +1,6 @@
 import {Mongo} from 'meteor/mongo';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import {Roles} from 'meteor/alanning:roles';
 
 import {Photos} from "../photos/photos";
 
@@ -75,5 +76,8 @@ Albums.helpers({
             },
             limit
         });
+    },
+    hasAccess(userId) {
+        return this.ownerId === userId || this.grantedUsersIds.indexOf(userId) >= 0 || Roles.userIsInRole(userId, 'ALBUM');
     }
 });

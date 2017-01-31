@@ -4,7 +4,7 @@ import {Session} from 'meteor/session';
 
 import '../../../../ui/layout';
 import '../../../../ui/rea/index';
-import '../../../../ui/rea/albums/view';
+import '../../../../ui/rea/albums/gallery';
 
 FlowRouter.route('/', {
     name: 'rea.index',
@@ -18,9 +18,16 @@ const albumGroup = FlowRouter.group({
 });
 
 albumGroup.route('/:albumId', {
-    name: 'rea.albums.view',
+    name: 'rea.albums.gallery',
     action() {
-        BlazeLayout.render('layout', {page: 'rea.albums.view'});
+        BlazeLayout.render('layout', {page: 'rea.albums.gallery'});
+    }
+});
+
+albumGroup.route('/:albumId/page/:page', {
+    name: 'rea.albums.gallery.page',
+    action() {
+        BlazeLayout.render('layout', {page: 'rea.albums.gallery'});
     }
 });
 
@@ -29,7 +36,7 @@ albumGroup.route('/:albumId/photo/:photoId', {
     action() {
         Session.set('photo.view', true);
 
-        BlazeLayout.render('layout', {page: 'rea.albums.view'});
+        BlazeLayout.render('layout', {page: 'rea.albums.gallery'});
     },
     triggersExit: [() => {
         Session.set('photo.view', false);

@@ -1,0 +1,103 @@
+<template name="rea.albums.gallery">
+    <section class="section">
+        <div class="container">
+            {{#unless Template.subscriptionsReady}}
+                {{> loading}}
+            {{else}}
+                {{#with album}}
+                    <nav class="level">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <div>
+                                    <h1 class="title">
+                                        {{this.name}}
+                                    </h1>
+                                    <h3 class="subtitle" style="margin-top: 5px;">
+                                        {{description}}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <div>
+                                    <p class="heading">
+                                        by {{this.owner.fullName}}
+                                    </p>
+                                    <p class="title">
+                                        {{countPhotos}} photos
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <hr>
+                    {{#if canManage}}
+                        <div class="control is-grouped is-pulled-right">
+                            <p class="control">
+                                <label for="photos" class="button is-success">
+                                    Upload photos
+                                    <input type="file" id="photos" multiple hidden>
+                                </label>
+                            </p>
+                            <p class="control">
+                                {{> Template.dynamic template="rea.albums.share.button" data=shareButtonData}}
+                            </p>
+                            <p class="control">
+                                {{> Template.dynamic template="rea.albums.edit.button" data=editButtonData}}
+                            </p>
+                            <p class="control">
+                                {{> Template.dynamic template="rea.albums.remove.button" data=removeButtonData}}
+                            </p>
+                        </div>
+                        <div class="is-clearfix"></div>
+                    {{/if}}
+                    <div class="gallery">
+                        {{#each photos}}
+                            <div class="gallery__item" style="background-image: url({{fileURL this}});">
+                                <a href="{{pathFor 'rea.albums.photo.view' albumId=../_id photoId=this._id}}"></a>
+                                <div class="gallery__item__controls">
+                                    <button class="delete is-small js-remove-photo"></button>
+                                </div>
+                                <!--<div class="gallery__item__infos">-->
+                                    <!--<p>-->
+                                        <!--{{> icon name='thumbs-up' size='is-small'}}-->
+                                        <!--<span>0</span>-->
+                                    <!--</p>-->
+                                    <!--<p>-->
+                                        <!--{{> icon name='comments' size='is-small'}}-->
+                                        <!--<span>0</span>-->
+                                    <!--</p>-->
+                                <!--</div>-->
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{#if hasPagination}}
+                        <nav class="pagination is-centered">
+                            <a href="{{previousPageHref}}" class="pagination-previous {{previousPageDisabled}} js-previous-page">Previous</a>
+                            <a href="{{nextPageHref}}" class="pagination-next {{nextPageDisabled}} js-next-page">Next page</a>
+                            <ul class="pagination-list">
+                                {{#each page in pages}}
+                                    <li>
+                                        <a href="{{pathFor 'rea.albums.gallery.page' albumId=this._id page=page}}" class="pagination-link {{currentPage page}}">
+                                            {{page}}
+                                        </a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </nav>
+                    {{/if}}
+                {{else}}
+                    <div class="content has-text-centered">
+                        <h3>
+                            Album not found :/
+                        </h3>
+                    </div>
+                {{/with}}
+            {{/unless}}
+        </div>
+    </section>
+    {{#if photoView}}
+        {{> Template.dynamic template="rea.photo.modal"}}
+    {{/if}}
+</template>

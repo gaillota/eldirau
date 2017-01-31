@@ -3,3 +3,23 @@
     -moz-border-radius: @value;
     border-radius: @value;
 }
+
+.gradient-vertical(@start-color: #555, @end-color: #333, @start-percent: 0%, @end-percent: 100%) {
+    background-image: -webkit-linear-gradient(top, @start-color @start-percent, @end-color @end-percent);
+    background-image: -o-linear-gradient(top, @start-color @start-percent, @end-color @end-percent);
+    background-image: linear-gradient(to bottom, @start-color @start-percent, @end-color @end-percent);
+}
+
+.gradient-vertical(@start-color: #555, @end-color: #333, @start-percent: 0%, @end-percent: 100%) {
+    background-image: -webkit-linear-gradient(left, @start-color @start-percent, @end-color @end-percent);
+    background-image: -o-linear-gradient(left, @start-color @start-percent, @end-color @end-percent);
+    background-image: linear-gradient(to right, @start-color @start-percent, @end-color @end-percent);
+}
+
+.transition(@prop, @time: 0) {
+    -webkit-transition: @prop @time;
+    -moz-transition: @prop @time;
+    -ms-transition: @prop @time;
+    -o-transition: @prop @time;
+    transition: @prop @time;
+}

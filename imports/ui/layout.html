@@ -8,9 +8,9 @@
         {{> Template.dynamic template=page}}
     {{/if}}
 
-    {{#each albumId in albumIdsUpload}}
+    {{#each upload in uploads}}
         <div class="uploader-container">
-            {{> uploader albumId=albumId}}
+            {{> uploader upload=upload}}
         </div>
     {{/each}}
 

@@ -70,6 +70,16 @@ Meteor.publishComposite('album', (albumId) => {
                 return this.ready();
             }
 
+            const album = Albums.find(albumId);
+
+            if (!album.count()) {
+                throw new Meteor.Error("not-found", 'Photo not found');
+            }
+
+            if (!album.fetch()[0].hasAccess(this.userId)) {
+                throw new Meteor.Error("not-authorized", "You are not allowed to see this photo");
+            }
+
             Counts.publish(this, 'album.photos.count', Photos.collection.find({
                 "meta.albumId": albumId,
                 "meta.deletedAt": {
@@ -77,7 +87,7 @@ Meteor.publishComposite('album', (albumId) => {
                 }
             }));
 
-            return Albums.find(albumId);
+            return album;
         },
         children: [
             {
@@ -102,14 +112,16 @@ Meteor.publishComposite('album.share', (albumId) => {
     }
 });
 
+/**
+ * Counts
+ */
+
 Meteor.publishComposite('my.albums.count', () => {
     return {
         find() {
-            if (!this.userId) {
-                return this.ready();
+            if (this.userId) {
+                Counts.publish(this, 'my.albums.count', AlbumManager.findUserAlbums(this.userId));
             }
-
-            Counts.publish(this, 'my.albums.count', AlbumManager.findUserAlbums(this.userId));
 
             return this.ready();
         }
@@ -119,11 +131,9 @@ Meteor.publishComposite('my.albums.count', () => {
 Meteor.publishComposite('shared.albums.count', () => {
     return {
         find() {
-            if (!this.userId) {
-                return this.ready();
+            if (this.userId) {
+                Counts.publish(this, 'shared.albums.count', AlbumManager.findAlbumsSharedWithUser(this.userId));
             }
-
-            Counts.publish(this, 'shared.albums.count', AlbumManager.findAlbumsSharedWithUser(this.userId));
 
             return this.ready();
         }

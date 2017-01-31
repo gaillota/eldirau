@@ -59,7 +59,7 @@ AutoForm.addHooks(modalName, {
     onSuccess(formType, result) {
         const albumId = getModalData(modalName);
         if (!_.isString(albumId) && Albums.findOne(result)) {
-            FlowRouter.go('rea.albums.view', {albumId: result});
+            FlowRouter.go('rea.albums.gallery', {albumId: result});
         }
         toggleModal(modalName, false);
     }

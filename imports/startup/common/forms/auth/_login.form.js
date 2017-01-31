@@ -6,14 +6,15 @@ export const LoginForm = new SimpleSchema({
         label: 'E-mail address',
         autoform: {
             autofocus: true,
-            placeholder: 'Ex: dumbledore_dies@edu.poudlard.com'
+            placeholder: 'Ex: dumbledore@poudlard.edu'
         }
     },
     password: {
         type: String,
         label: 'Password',
         autoform: {
-            type: 'password'
+            type: 'password',
+            placeholder: '********'
         }
     }
 });

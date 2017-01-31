@@ -1,5 +1,6 @@
 import {Template} from 'meteor/templating';
-import {Session} from 'meteor/session';
+
+import {UploadManager} from '../startup/services/upload.manager';
 
 import './components/navbar.component';
 import './components/loading.component';
@@ -11,8 +12,8 @@ import './rea/albums/modals/share.modal';
 import './layout.html';
 
 Template.layout.helpers({
-    albumIdsUpload() {
-        return Session.get('albumIdsUpload');
+    uploads() {
+        return UploadManager.getUploads();
     },
     modals() {
         return [

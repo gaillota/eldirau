@@ -1,6 +1,5 @@
 import {Template} from "meteor/templating";
 import {ReactiveVar} from 'meteor/reactive-var';
-import {Random} from 'meteor/random'
 
 import './uploader.component.html';
 
@@ -8,10 +7,6 @@ const templateName = "uploader";
 
 Template[templateName].onCreated(function () {
     this.hidden = new ReactiveVar(false);
-});
-
-Template[templateName].onRendered(function () {
-    this.$('#photos').click();
 });
 
 Template[templateName].helpers({
@@ -31,8 +26,5 @@ Template[templateName].events({
         event.preventDefault();
 
         template.hidden.set(!template.hidden.get());
-    },
-    'change #photos'(event, template) {
-        const files = event.currentTarget.files;
     }
 });

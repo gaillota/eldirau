@@ -17,7 +17,11 @@ import './photo.modal.html';
 Template[templateName].onCreated(function () {
     this.getPhotoId = () => FlowRouter.getParam("photoId");
     this.getAlbumId = () => FlowRouter.getParam('albumId');
-    this.closeModal = () => FlowRouter.go('rea.albums.view', {albumId: this.getAlbumId()});
+    this.closeModal = () => {
+        if (this.getAlbumId()) {
+            FlowRouter.go('rea.albums.gallery', {albumId: this.getAlbumId()});
+        }
+    };
     this.editing = new ReactiveVar();
     this.showEditForm = () => this.editing.set(true);
     this.hideEditForm = () => this.editing.set(undefined);
@@ -33,6 +37,10 @@ Template[templateName].onRendered(function () {
             this.closeModal();
         }
     });
+});
+
+Template[templateName].onDestroyed(function() {
+    $(document).off('keyup');
 });
 
 Template[templateName].helpers({

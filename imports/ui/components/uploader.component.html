@@ -4,7 +4,7 @@
             <input type="file" id="photos" multiple hidden>
         </form>
         <div class="uploader__header">
-            <div class="heading_title">Uploading to <span class="album_name">{{albumId}}</span></div>
+            <div class="heading_title">Uploading to <span class="album_name">{{upload.albumId}}</span></div>
             <button class="button is-small reduce">
                 <span class="icon is-small">
                     <i class="fa fa-{{reduceIcon}}"></i>
@@ -20,30 +20,21 @@
                         <th style="min-width: 200px;">Progress</th>
                         <th>Speed</th>
                         <th>Time remaining</th>
-                        <!--<th>Actions</th>-->
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>bduzq.jpeg</td>
-                        <td>
-                            <progress class="progress is-success" value="55" max="100">55%</progress>
-                        </td>
-                        <td>1,5 Mo/s</td>
-                        <td>5 secs. left</td>
-                        <!--<td>-->
-                        <!--<button class="button is-small js-pause">-->
-                        <!--<span class="icon is-small">-->
-                        <!--<i class="fa fa-pause"></i>-->
-                        <!--</span>-->
-                        <!--</button>-->
-                        <!--<button class="button is-small js-cancel">-->
-                        <!--<span class="icon is-small">-->
-                        <!--<i class="fa fa-stop"></i>-->
-                        <!--</span>-->
-                        <!--</button>-->
-                        <!--</td>-->
-                    </tr>
+                    {{#each fileUploader in upload.fileUploaders}}
+                        <tr>
+                            <td>{{fileUploader.file.name}}</td>
+                            <td>
+                                {{#let progress=fileUploader.progress}}
+                                    <progress class="progress is-success" value="{{progress}}" max="100">{{progress}}%</progress>
+                                {{/let}}
+                            </td>
+                            <td>{{fileUploader.estimateSpeed}}</td>
+                            <td>{{fileUploader.estimateTime}}</td>
+                        </tr>
+                    {{/each}}
                     </tbody>
                 </table>
             </div>

@@ -4,60 +4,59 @@
         <div class="modal-content">
             {{#each photo in photos}}
                 <div class="photo-container">
-                    {{#each previousPhoto}}
-                        <p class="previous">
-                            <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
-                                               photoId=this._id}}">&lsaquo;</a>
-                        </p>
-                    {{/each}}
                     <div class="photo" style="background-image: url({{fileURL photo}});">
+                        <p class="previous">
+                            {{#each previousPhoto}}
+                                <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
+                                                   photoId=this._id}}">&lsaquo;</a>
+                            {{/each}}
+                        </p>
                         {{#each nextPhoto}}
-                            <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId photoId=this._id}}"></a>
+                            <a class="photo-link" href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
+                                                                  photoId=this._id}}"></a>
+                            <p class="next">
+                                <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
+                                                   photoId=this._id}}">&rsaquo;</a>
+                            </p>
                         {{/each}}
                     </div>
-                    {{#each nextPhoto}}
-                        <p class="next">
-                            <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
-                                               photoId=this._id}}">&rsaquo;</a>
-                        </p>
-                    {{/each}}
                 </div>
                 <div class="photo-details">
                     <button class="modal-close js-close"></button>
                     {{#with owner photo.userId}}
                         <article class="media" style="margin-bottom: 15px;">
                             <figure class="media-left">
-                                <p class="image is-48x48">
+                                <p class="image is-64x64">
                                     <img src="{{gravatarUrl this.emails.[0].address}}">
                                 </p>
                             </figure>
                             <div class="media-content">
                                 <div class="content">
-                                    <p>
+                                    <p class="title is-5">
                                         <strong>{{this.fullName}}</strong>
+                                    </p>
+                                    <p class="subtitle is-6">
+                                        {{formatDate photo.meta.uploadedAt 'MMMM Do HH:mm'}}
                                     </p>
                                 </div>
                             </div>
                         </article>
                     {{/with}}
                     {{#unless editing}}
-                        <h1 class="title is-3 is-bold name">
+                        <h1 class="title is-4 is-bold name">
                             {{#with photo.meta.name}}
                                 {{this}}
                             {{else}}
                                 <em>No name</em>
                             {{/with}}
                         </h1>
-                        <h2 class="title is-5 description">
+                        <h2 class="subtitle title is-6 description">
                             {{#with photo.meta.description}}
                                 {{this}}
                             {{else}}
                                 <em>No description.</em>
                             {{/with}}
                         </h2>
-                        <p class="title is-6 date">
-                            {{formatDate photo.meta.uploadedAt 'MMMM Do HH:mm'}}
-                        </p>
                         {{#if isOwner photo.userId}}
                             <div class="control is-grouped">
                                 <p class="control">
@@ -69,23 +68,22 @@
                             </div>
                         {{/if}}
                     {{else}}
-                        <h1 class="title is-5">Editing this photo</h1>
                         {{#autoForm schema=photoForm id="photo.modal.edit" doc=photo.meta}}
                             <label class="label">{{afFieldLabelText name="name"}}</label>
                             <p class="control">
-                                {{> afFieldInput name="name" class="input"}}
+                                {{> afFieldInput name="name" class="input is-small"}}
                                 <span class="help is-danger">{{{afFieldMessage name='name'}}}</span>
                             </p>
                             <label class="label">{{afFieldLabelText name="description"}}</label>
                             <p class="control">
-                                {{> afFieldInput name="description" class="textarea"}}
+                                {{> afFieldInput name="description" class="textarea is-small"}}
                                 <span class="help is-danger">{{{afFieldMessage name='description'}}}</span>
                             </p>
                             <p class="control">
-                                <button type="submit" class="button is-success">
+                                <button type="submit" class="button is-small is-success">
                                     Submit
                                 </button>
-                                <button class="button js-cancel-editing">
+                                <button class="button is-small js-cancel-editing">
                                     Cancel
                                 </button>
                             </p>

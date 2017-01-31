@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-image">
             <figure class="image is-4by3">
-                <a href="{{pathFor 'rea.albums.view' albumId=this._id}}">
+                <a href="{{pathFor 'rea.albums.gallery' albumId=this._id}}">
                     {{#each photo in this.preview}}
                         <img src="{{fileURL photo}}" alt="{{this.name}}_preview">
                     {{/each}}
@@ -18,7 +18,7 @@
                 </div>
                 <div class="media-content">
                     <p class="title is-4">
-                        <a href="{{pathFor 'rea.albums.view' albumId=this._id}}">
+                        <a href="{{pathFor 'rea.albums.gallery' albumId=this._id}}">
                             {{this.name}}
                         </a>
                     </p>
@@ -27,13 +27,22 @@
             </div>
 
             <div class="content">
-                {{#with this.description}}
-                    <em>{{this}}</em>
-                {{else}}
-                    <em>No description provided</em>
-                {{/with}}
-                <br>
+                <p>
+                    {{#with this.description}}
+                        <em>{{this}}</em>
+                    {{else}}
+                        <em>No description provided</em>
+                    {{/with}}
+                </p>
                 <small>{{formatDate this.createdAt 'HH:mm - D MMMM YYYY'}}</small>
+                <div class="control is-grouped" style="margin-top: 5px;">
+                    <p class="control">
+                        {{> Template.dynamic template="rea.albums.share.button" data=shareButtonData}}
+                    </p>
+                    <p class="control">
+                        {{> Template.dynamic template="rea.albums.edit.button" data=editButtonData}}
+                    </p>
+                </div>
             </div>
         </div>
     </div>

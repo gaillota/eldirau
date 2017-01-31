@@ -13,6 +13,9 @@ export const Photos = new FilesCollection({
         }
         return 'Please upload an image, with size equal or less than 10MB';
     },
+    onAfterUpload: function(fileRef) {
+        // TODO: Create thumbnail using gm in case of insanely big photos
+    }
 });
 
 const isImage = file => file.type.indexOf("image") === 0 && /png|jpg|jpeg|gif/i.test(file.extension);

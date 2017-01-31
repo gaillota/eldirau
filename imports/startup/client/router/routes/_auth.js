@@ -36,7 +36,7 @@ FlowRouter.route('/verify-email/:token', {
             } else {
                 NotificationService.success('Your account is now activated. Welcome on Eldir.au !');
             }
-            FlowRouter.go('public.index');
+            FlowRouter.go('rea.index');
         });
     }
 });

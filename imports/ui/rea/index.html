@@ -11,7 +11,7 @@
                     <div class="columns">
                         {{#each album in myAlbums}}
                             <div class="column is-4">
-                                {{> Template.dynamic template="rea.albums.card" album=album}}
+                                {{> Template.dynamic template="rea.albums.card" data=album}}
                             </div>
                         {{else}}
                             <div class="column has-text-centered">
