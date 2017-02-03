@@ -4,7 +4,7 @@ import {AutoForm} from 'meteor/aldeed:autoform';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 
 import {LoginForm} from '../../../startup/common/forms/auth/_login.form';
-import {NotificationService} from '../../../startup/services/notification.service.js';
+import {NotificationService} from '../../../startup/services/';
 import {getDispatcherPath} from '../../../startup/utilities';
 
 import './login.html';

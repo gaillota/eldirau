@@ -10,12 +10,14 @@ const templateName = "rea.albums.card";
 Template[templateName].helpers({
     shareButtonData() {
         return {
+            type: 'info',
             classes: 'is-small',
             albumId: this._id
         }
     },
     editButtonData() {
         return {
+            type: 'warning',
             classes: 'is-small',
             albumId: this._id
         }

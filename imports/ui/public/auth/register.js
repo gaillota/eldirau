@@ -3,7 +3,7 @@ import {AutoForm} from 'meteor/aldeed:autoform';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 
 import {RegistrationForm} from '../../../startup/common/forms/auth';
-import {NotificationService} from '../../../startup/services/notification.service';
+import {NotificationService} from '../../../startup/services';
 
 import './register.html';
 

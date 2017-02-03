@@ -6,37 +6,13 @@
                     {{> sidemenu}}
                 </div>
                 <div class="column">
-                    <h1 class="title">My Albums</h1>
-                    <h3 class="subtitle">Last {{count myAlbums}} albums</h3>
-                    <div class="columns">
-                        {{#each album in myAlbums}}
-                            <div class="column is-4">
-                                {{> Template.dynamic template="rea.albums.card" data=album}}
-                            </div>
-                        {{else}}
-                            <div class="column has-text-centered">
-                                <p class="title is-6">
-                                    You don't have any albums
-                                </p>
-                            </div>
-                        {{/each}}
-                    </div>
-                    <hr>
-                    <h1 class="title">Shared with me</h1>
-                    <h3 class="subtitle">Last {{count albumsSharedWithMe}} albums</h3>
-                    <div class="columns">
-                        {{#each album in albumsSharedWithMe}}
-                            <div class="column is-4">
-                                {{> Template.dynamic template="rea.albums.card" data=album}}
-                            </div>
-                        {{else}}
-                            <div class="column has-text-centered">
-                                <p class="title is-6">
-                                    No one shared an album with you.
-                                </p>
-                            </div>
-                        {{/each}}
-                    </div>
+                    {{#if section}}
+                        {{> Template.dynamic template=section}}
+                    {{else}}
+                        {{> Template.dynamic template="rea.albums.section.my-albums" data=indexData}}
+                        <hr>
+                        {{> Template.dynamic template="rea.albums.section.shared-with-me" data=indexData}}
+                    {{/if}}
                 </div>
             </div>
         </div>

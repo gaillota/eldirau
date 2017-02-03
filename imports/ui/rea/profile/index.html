@@ -1,0 +1,43 @@
+<template name="rea.profile">
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-3 has-text-centered">
+                    {{#with currentUser}}
+                        <figure class="image is-square">
+                            <img src="{{gravatarUrl}}" alt="gravatar">
+                        </figure>
+                        <h1 class="title">
+                            {{fullName}}
+                        </h1>
+                    {{/with}}
+                </div>
+                <div class="column">
+                    <h1 class="title">Change password</h1>
+                    {{#autoForm schema=changePasswordForm id="rea.profile.change-password" resetOnSuccess=true}}
+                        <label class="label">{{afFieldLabelText name="oldPassword"}}</label>
+                        <p class="control">
+                            {{> afFieldInput name="oldPassword" class="input"}}
+                            <span class="help is-danger">{{{afFieldMessage name='oldPassword'}}}</span>
+                        </p>
+                        <label class="label">{{afFieldLabelText name="newPassword"}}</label>
+                        <p class="control">
+                            {{> afFieldInput name="newPassword" class="input"}}
+                            <span class="help is-danger">{{{afFieldMessage name='newPassword'}}}</span>
+                        </p>
+                        <label class="label">{{afFieldLabelText name="confirmPassword"}}</label>
+                        <p class="control">
+                            {{> afFieldInput name="confirmPassword" class="input"}}
+                            <span class="help is-danger">{{{afFieldMessage name='confirmPassword'}}}</span>
+                        </p>
+                        <p class="control">
+                            <button type="submit" class="button is-primary">
+                                Save
+                            </button>
+                        </p>
+                    {{/autoForm}}
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

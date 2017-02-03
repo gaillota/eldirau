@@ -5,7 +5,7 @@ import _extend from 'lodash/extend';
 export const Photos = new FilesCollection({
     collectionName: 'photos',
     allowClientCode: false,
-    storagePath: 'assets/uploads/photos',
+    storagePath: '/cdn/storage/uploads/photos',
     onBeforeUpload: function (file) {
         // Allow upload files under 10MB, and only in png/jpg/jpeg formats
         if (file.size <= 10485760 && isImage(file)) {

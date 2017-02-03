@@ -29,9 +29,6 @@ matb33:collection-hooks
 tmeasday:publish-counts
 reywood:publish-composite
 
-# files
-ostrio:files
-
 # ui
 blaze-html-templates
 aldeed:template-extension
@@ -66,6 +63,9 @@ tunifight:loggedin-mixin
 rlivingston:simple-schema-mixin
 ziarno:restrict-mixin
 ziarno:provide-mixin
+
+# files
+ostrio:files
 
 # mobile
 mobile-experience

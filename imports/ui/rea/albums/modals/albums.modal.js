@@ -13,8 +13,9 @@ const templateName = "rea.albums.modals";
 const modalName = "album.modal";
 
 Template[templateName].onCreated(function () {
+    this.getAlbumId = () => getModalData(modalName);
     this.isEditing = () => {
-        const albumId = getModalData(modalName);
+        const albumId = this.getAlbumId();
         return _.isString(albumId) && Albums.find(albumId).count();
     }
 });
@@ -48,17 +49,19 @@ Template[templateName].events({
 AutoForm.addHooks(modalName, {
     onSubmit(doc) {
         this.event.preventDefault();
+        const template = this.template.parent();
 
-        const albumId = getModalData(modalName);
-        if (_.isString(albumId) && Albums.find(albumId).count()) {
+        const albumId = template.getAlbumId();
+        if (template.isEditing()) {
             doc.albumId = albumId;
         }
 
         upsert.call(doc, this.done);
     },
     onSuccess(formType, result) {
-        const albumId = getModalData(modalName);
-        if (!_.isString(albumId) && Albums.findOne(result)) {
+        const template = this.template.parent();
+
+        if (!template.isEditing()) {
             FlowRouter.go('rea.albums.gallery', {albumId: result});
         }
         toggleModal(modalName, false);

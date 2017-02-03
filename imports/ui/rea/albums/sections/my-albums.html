@@ -1,0 +1,19 @@
+<template name="rea.albums.section.my-albums">
+    <h1 class="title">My Albums</h1>
+    {{#if limit}}
+        <h3 class="subtitle">Last {{count albums}} albums</h3>
+    {{/if}}
+    <div class="columns is-multiline">
+        {{#each album in albums}}
+            <div class="column is-4">
+                {{> Template.dynamic template="rea.albums.card" data=album}}
+            </div>
+        {{else}}
+            <div class="column has-text-centered">
+                <p class="title is-6">
+                    You don't have any albums
+                </p>
+            </div>
+        {{/each}}
+    </div>
+</template>

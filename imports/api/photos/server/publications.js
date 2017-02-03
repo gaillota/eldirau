@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
 import {Photos} from '../photos';
-import {PhotoManager} from '../../../startup/services/photo.manager';
+import {PhotoRepository} from '../../../startup/services';
 import {Albums} from '../../albums/albums';
 
 Meteor.publishComposite('photos.album', (albumId, page = 1, limit = 12) => {
@@ -72,12 +72,12 @@ Meteor.publishComposite('photo.view', (photoId) => {
         children: [
             {
                 find(photo) {
-                    return PhotoManager.findPreviousPhotoFrom(photo);
+                    return PhotoRepository.findPreviousPhotoFrom(photo);
                 }
             },
             {
                 find(photo) {
-                    return PhotoManager.findNextPhotoFrom(photo);
+                    return PhotoRepository.findNextPhotoFrom(photo);
                 }
             }
         ]

@@ -1,24 +1,24 @@
-<template name="rea.photo.modal">
+<template name="rea.albums.slider.modal">
     <div class="modal is-active photo_modal">
         <div class="modal-background js-close"></div>
         <div class="modal-content">
-            {{#each photo in photos}}
+            {{#with photo}}
                 <div class="photo-container">
                     <div class="photo" style="background-image: url({{fileURL photo}});">
                         <p class="previous">
-                            {{#each previousPhoto}}
-                                <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
-                                                   photoId=this._id}}">&lsaquo;</a>
-                            {{/each}}
+                            {{#if previousPhoto}}
+                                <a href="{{pathFor 'rea.albums.photo.slider' albumId=photo.meta.albumId
+                                                   photoId=previousPhoto._id}}">&lsaquo;</a>
+                            {{/if}}
                         </p>
-                        {{#each nextPhoto}}
-                            <a class="photo-link" href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
-                                                                  photoId=this._id}}"></a>
-                            <p class="next">
-                                <a href="{{pathFor 'rea.albums.photo.view' albumId=this.meta.albumId
-                                                   photoId=this._id}}">&rsaquo;</a>
-                            </p>
-                        {{/each}}
+                        {{#if nextPhoto}}
+                            {{#let path=(pathFor 'rea.albums.photo.slider' albumId=photo.meta.albumId photoId=nextPhoto._id)}}
+                                <a class="photo-link" href="{{path}}"></a>
+                                <p class="next">
+                                    <a href="{{path}}">&rsaquo;</a>
+                                </p>
+                            {{/let}}
+                        {{/if}}
                     </div>
                 </div>
                 <div class="photo-details">
@@ -26,7 +26,7 @@
                     {{#with owner photo.userId}}
                         <article class="media" style="margin-bottom: 15px;">
                             <figure class="media-left">
-                                <p class="image is-64x64">
+                                <p class="image is-48x48">
                                     <img src="{{gravatarUrl this.emails.[0].address}}">
                                 </p>
                             </figure>
@@ -47,23 +47,21 @@
                             {{#with photo.meta.name}}
                                 {{this}}
                             {{else}}
-                                <em>No name</em>
+                                {{photo.name}}
                             {{/with}}
                         </h1>
                         <h2 class="subtitle title is-6 description">
                             {{#with photo.meta.description}}
                                 {{this}}
-                            {{else}}
-                                <em>No description.</em>
                             {{/with}}
                         </h2>
                         {{#if isOwner photo.userId}}
                             <div class="control is-grouped">
                                 <p class="control">
-                                    <button class="button is-small is-warning js-photo-edit">Edit</button>
+                                    <button class="button is-small is-link js-photo-edit">Edit</button>
                                 </p>
                                 <p class="control">
-                                    <button class="button is-small is-danger js-photo-remove">Remove</button>
+                                    <button class="button is-small is-link js-photo-remove">Remove</button>
                                 </p>
                             </div>
                         {{/if}}
@@ -90,7 +88,7 @@
                         {{/autoForm}}
                     {{/unless}}
                 </div>
-            {{/each}}
+            {{/with}}
         </div>
     </div>
 </template>

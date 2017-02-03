@@ -69,7 +69,10 @@ Albums.helpers({
     },
     photos(limit = 0) {
         return Photos.collection.find({
-            "meta.albumId": this._id
+            "meta.albumId": this._id,
+            "meta.deletedAt": {
+                $exists: false
+            }
         }, {
             sort: {
                 "meta.uploadedAt": -1

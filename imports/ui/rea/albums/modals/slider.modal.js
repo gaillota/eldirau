@@ -5,14 +5,14 @@ import {FlowRouter} from "meteor/kadira:flow-router";
 import {AutoForm} from 'meteor/aldeed:autoform';
 
 import {Photos} from '../../../../api/photos/photos';
-import {PhotoManager} from '../../../../startup/services/photo.manager';
+import {PhotoRepository} from '../../../../startup/services';
 import {form as PhotoForm} from '../../../../startup/common/forms/albums/album.form';
 import {update, remove} from '../../../../api/photos/methods';
-import {NotificationService} from '../../../../startup/services/notification.service';
+import {NotificationService} from '../../../../startup/services';
 
-const templateName = "rea.photo.modal";
+const templateName = "rea.albums.slider.modal";
 
-import './photo.modal.html';
+import './slider.modal.html';
 
 Template[templateName].onCreated(function () {
     this.getPhotoId = () => FlowRouter.getParam("photoId");
@@ -33,8 +33,25 @@ Template[templateName].onCreated(function () {
 
 Template[templateName].onRendered(function () {
     $(document).on('keyup', (e) => {
-        if (e.keyCode == 27) {
-            this.closeModal();
+        switch (e.keyCode) {
+            case 27:
+                // ESC
+                this.closeModal();
+                break;
+            case 37:
+                // Left
+                const previousPhoto = PhotoRepository.findPreviousPhotoFrom(this.getPhotoId()).fetch()[0];
+                if (previousPhoto) {
+                    FlowRouter.go('rea.albums.photo.slider', {albumId: this.getAlbumId(), photoId: previousPhoto._id});
+                }
+                break;
+            case 39:
+                // Right
+                const nextPhoto = PhotoRepository.findNextPhotoFrom(this.getPhotoId()).fetch()[0];
+                if (nextPhoto) {
+                    FlowRouter.go('rea.albums.photo.slider', {albumId: this.getAlbumId(), photoId: nextPhoto._id});
+                }
+                break;
         }
     });
 });
@@ -44,14 +61,14 @@ Template[templateName].onDestroyed(function() {
 });
 
 Template[templateName].helpers({
-    photos() {
-        return Photos.collection.find(Template.instance().getPhotoId());
+    photo() {
+        return Photos.collection.findOne(Template.instance().getPhotoId());
     },
     previousPhoto() {
-        return PhotoManager.findPreviousPhotoFrom(Template.instance().getPhotoId());
+        return PhotoRepository.findPreviousPhotoFrom(Template.instance().getPhotoId()).fetch()[0];
     },
     nextPhoto() {
-        return PhotoManager.findNextPhotoFrom(Template.instance().getPhotoId());
+        return PhotoRepository.findNextPhotoFrom(Template.instance().getPhotoId()).fetch()[0];
     },
     owner(userId) {
         return Meteor.users.findOne(userId);

@@ -3,7 +3,7 @@ import {Counts} from "meteor/tmeasday:publish-counts";
 
 import {Albums} from "../albums";
 import {Photos} from "../../photos/photos";
-import {AlbumManager} from '../../../startup/services/album.manager';
+import {AlbumRepository} from '../../../startup/services';
 
 Meteor.publishComposite('albums.user', (limit = 3) => {
     return {
@@ -12,7 +12,7 @@ Meteor.publishComposite('albums.user', (limit = 3) => {
                 return this.ready();
             }
 
-            return AlbumManager.findUserAlbums(this.userId, {}, {
+            return AlbumRepository.findAlbumsByUser(this.userId, {}, {
                 sort: {
                     createdAt: -1
                 },
@@ -41,7 +41,7 @@ Meteor.publishComposite('albums.shared', (limit = 3) => {
                 return this.ready();
             }
 
-            return AlbumManager.findAlbumsSharedWithUser(this.userId, {}, {
+            return AlbumRepository.findAlbumsSharedWithUser(this.userId, {}, {
                 sort: {
                     createdAt: -1
                 },
@@ -120,7 +120,7 @@ Meteor.publishComposite('my.albums.count', () => {
     return {
         find() {
             if (this.userId) {
-                Counts.publish(this, 'my.albums.count', AlbumManager.findUserAlbums(this.userId));
+                Counts.publish(this, 'my.albums.count', AlbumRepository.findAlbumsByUser(this.userId));
             }
 
             return this.ready();
@@ -132,7 +132,7 @@ Meteor.publishComposite('shared.albums.count', () => {
     return {
         find() {
             if (this.userId) {
-                Counts.publish(this, 'shared.albums.count', AlbumManager.findAlbumsSharedWithUser(this.userId));
+                Counts.publish(this, 'shared.albums.count', AlbumRepository.findAlbumsSharedWithUser(this.userId));
             }
 
             return this.ready();

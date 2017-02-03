@@ -5,24 +5,30 @@
                 <a href="{{pathFor 'rea.albums.gallery' albumId=this._id}}">
                     {{#each photo in this.preview}}
                         <img src="{{fileURL photo}}" alt="{{this.name}}_preview">
+                    {{else}}
+                        <img src="{{assets '/images/preview.jpg'}}" alt="preview">
                     {{/each}}
                 </a>
             </figure>
         </div>
         <div class="card-content">
             <div class="media">
-                <div class="media-left">
-                    <figure class="image" style="width: 40px;height: 40px;">
-                        <img src="{{gravatarUrl this.owner.emails.[0].address}}" alt="gravatar">
-                    </figure>
-                </div>
+                {{#unless $eq currentUser._id owner._id}}
+                    <div class="media-left">
+                        <figure class="image" style="width: 40px;height: 40px;">
+                            <img src="{{gravatarUrl this.owner.emails.[0].address}}" alt="gravatar">
+                        </figure>
+                    </div>
+                {{/unless}}
                 <div class="media-content">
                     <p class="title is-4">
                         <a href="{{pathFor 'rea.albums.gallery' albumId=this._id}}">
                             {{this.name}}
                         </a>
                     </p>
-                    <p class="subtitle is-6">{{this.owner.fullName}}</p>
+                    {{#unless $eq currentUser._id owner._id}}
+                        <p class="subtitle is-6">{{this.owner.fullName}}</p>
+                    {{/unless}}
                 </div>
             </div>
 

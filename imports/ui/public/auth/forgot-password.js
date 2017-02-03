@@ -3,7 +3,7 @@ import {Template} from 'meteor/templating';
 import {AutoForm} from 'meteor/aldeed:autoform';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 
-import {NotificationService} from '../../../startup/services/notification.service';
+import {NotificationService} from '../../../startup/services';
 import {ForgotPasswordForm} from '../../../startup/common/forms/auth';
 
 import './forgot-password.html';

@@ -1,6 +1,8 @@
 import {Template} from "meteor/templating";
 import {ReactiveVar} from 'meteor/reactive-var';
 
+import {UploadManager} from '../../startup/services';
+
 import './uploader.component.html';
 
 const templateName = "uploader";
@@ -10,14 +12,20 @@ Template[templateName].onCreated(function () {
 });
 
 Template[templateName].helpers({
-    formId() {
-        return Template.instance().formId;
+    uploadCount() {
+        return UploadManager.getUploadCount();
+    },
+    filesCount() {
+        return UploadManager.getFilesCount();
     },
     hidden() {
         return Template.instance().hidden.get() && 'is-hidden';
     },
     reduceIcon() {
         return Template.instance().hidden.get() ? 'plus' : 'minus';
+    },
+    currentFile() {
+        return UploadManager.getCurrentFile();
     }
 });
 

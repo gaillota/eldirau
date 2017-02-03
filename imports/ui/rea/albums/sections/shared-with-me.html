@@ -1,0 +1,19 @@
+<template name="rea.albums.section.shared-with-me">
+    <h1 class="title">Shared with me</h1>
+    {{#if limit}}
+        <h3 class="subtitle">Last {{count albums}} albums</h3>
+    {{/if}}
+    <div class="columns is-multiline">
+        {{#each album in albums}}
+            <div class="column is-4">
+                {{> Template.dynamic template="rea.albums.card" data=album}}
+            </div>
+        {{else}}
+            <div class="column has-text-centered">
+                <p class="title is-6">
+                    No one shared an album with you.
+                </p>
+            </div>
+        {{/each}}
+    </div>
+</template>

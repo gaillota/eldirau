@@ -4,7 +4,7 @@ import {Accounts} from "meteor/accounts-base";
 import {FlowRouter} from "meteor/kadira:flow-router";
 
 import {ResetPasswordForm} from '../../../startup/common/forms/auth';
-import {NotificationService} from '../../../startup/services/notification.service';
+import {NotificationService} from '../../../startup/services';
 
 import "./reset-password.html";
 

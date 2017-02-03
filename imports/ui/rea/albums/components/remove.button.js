@@ -7,6 +7,9 @@ import './remove.button.html';
 const templateName = "rea.albums.remove.button";
 
 Template[templateName].helpers({
+    type() {
+        return Template.currentData().type || 'danger';
+    },
     text() {
         return Template.currentData().text || 'Remove';
     }

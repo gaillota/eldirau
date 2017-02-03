@@ -2,7 +2,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {BlazeLayout} from 'meteor/kadira:blaze-layout';
 import {Accounts} from 'meteor/accounts-base';
 
-import {NotificationService} from '../../../services/notification.service.js';
+import {NotificationService} from '../../../services';
 import {resetDispatcher} from '../../../utilities';
 
 import '../../../../ui/layout';

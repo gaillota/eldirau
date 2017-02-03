@@ -1,7 +1,7 @@
 import {Photos} from '../../api/photos/photos';
 import {_} from 'lodash';
 
-export const PhotoManager = {
+export const PhotoRepository = {
     _findQuery(photoOrPhotoId, $operator, sort, limit = 1) {
         if (!_.isString(photoOrPhotoId) || _.isObject(photoOrPhotoId)) {
             return;

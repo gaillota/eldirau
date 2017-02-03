@@ -33,53 +33,90 @@
                     </nav>
                     <hr>
                     {{#if canManage}}
-                        <div class="control is-grouped is-pulled-right">
-                            <p class="control">
-                                <label for="photos" class="button is-success">
-                                    Upload photos
-                                    <input type="file" id="photos" multiple hidden>
-                                </label>
-                            </p>
-                            <p class="control">
-                                {{> Template.dynamic template="rea.albums.share.button" data=shareButtonData}}
-                            </p>
-                            <p class="control">
-                                {{> Template.dynamic template="rea.albums.edit.button" data=editButtonData}}
-                            </p>
-                            <p class="control">
-                                {{> Template.dynamic template="rea.albums.remove.button" data=removeButtonData}}
-                            </p>
+                        <div class="columns">
+                            <div class="column">
+                                {{#with uploading}}
+                                    <div class="columns">
+                                        <div class="column is-narrow">
+                                            <p class="subtitle is-5">
+                                                {{currentUpload}}/{{totalUploads}}
+                                            </p>
+                                        </div>
+                                        <div class="column" style="display: flex; align-items: center;">
+                                            {{#unless done}}
+                                                <progress class="progress is-primary" value="{{progress}}"
+                                                          max="100">{{progress}}%
+                                                </progress>
+                                            {{else}}
+                                                <progress class="progress is-primary" value="100"
+                                                          max="100">100%
+                                                </progress>
+                                            {{/unless}}
+                                        </div>
+                                        <div class="column is-narrow">
+                                            <p class="subtitle is-5">
+                                                {{#unless done}}
+                                                    {{progress}}%
+                                                {{else}}
+                                                    {{> icon name='check-circle' color='#00d000'}}
+                                                {{/unless}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                {{/with}}
+                            </div>
+                            <div class="column is-narrow">
+                                <div class="control is-grouped is-pulled-right">
+                                    <p class="control">
+                                        <label for="photos" class="button is-success">
+                                            Upload photos
+                                            <input type="file" id="photos" multiple hidden>
+                                        </label>
+                                    </p>
+                                    <p class="control">
+                                        {{> Template.dynamic template="rea.albums.share.button" data=shareButtonData}}
+                                    </p>
+                                    <p class="control">
+                                        {{> Template.dynamic template="rea.albums.edit.button" data=editButtonData}}
+                                    </p>
+                                    <p class="control">
+                                        {{> Template.dynamic template="rea.albums.remove.button" data=removeButtonData}}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="is-clearfix"></div>
                     {{/if}}
                     <div class="gallery">
                         {{#each photos}}
                             <div class="gallery__item" style="background-image: url({{fileURL this}});">
-                                <a href="{{pathFor 'rea.albums.photo.view' albumId=../_id photoId=this._id}}"></a>
+                                <a href="{{pathFor 'rea.albums.photo.slider' albumId=../_id photoId=this._id}}"></a>
                                 <div class="gallery__item__controls">
                                     <button class="delete is-small js-remove-photo"></button>
                                 </div>
                                 <!--<div class="gallery__item__infos">-->
-                                    <!--<p>-->
-                                        <!--{{> icon name='thumbs-up' size='is-small'}}-->
-                                        <!--<span>0</span>-->
-                                    <!--</p>-->
-                                    <!--<p>-->
-                                        <!--{{> icon name='comments' size='is-small'}}-->
-                                        <!--<span>0</span>-->
-                                    <!--</p>-->
+                                <!--<p>-->
+                                <!--{{> icon name='thumbs-up' size='is-small'}}-->
+                                <!--<span>0</span>-->
+                                <!--</p>-->
+                                <!--<p>-->
+                                <!--{{> icon name='comments' size='is-small'}}-->
+                                <!--<span>0</span>-->
+                                <!--</p>-->
                                 <!--</div>-->
                             </div>
                         {{/each}}
                     </div>
                     {{#if hasPagination}}
                         <nav class="pagination is-centered">
-                            <a href="{{previousPageHref}}" class="pagination-previous {{previousPageDisabled}} js-previous-page">Previous</a>
-                            <a href="{{nextPageHref}}" class="pagination-next {{nextPageDisabled}} js-next-page">Next page</a>
+                            <a href="{{previousPageHref}}"
+                               class="pagination-previous {{previousPageDisabled}} js-previous-page">Previous</a>
+                            <a href="{{nextPageHref}}" class="pagination-next {{nextPageDisabled}} js-next-page">Next
+                                page</a>
                             <ul class="pagination-list">
                                 {{#each page in pages}}
                                     <li>
-                                        <a href="{{pathFor 'rea.albums.gallery.page' albumId=this._id page=page}}" class="pagination-link {{currentPage page}}">
+                                        <a href="{{pathFor 'rea.albums.gallery.page' albumId=this._id page=page}}"
+                                           class="pagination-link {{currentPage page}}">
                                             {{page}}
                                         </a>
                                     </li>
@@ -88,8 +125,8 @@
                         </nav>
                     {{/if}}
                 {{else}}
-                    <div class="content has-text-centered">
-                        <h3>
+                    <div class="content">
+                        <h3 class="has-text-centered">
                             Album not found :/
                         </h3>
                     </div>
@@ -97,7 +134,7 @@
             {{/unless}}
         </div>
     </section>
-    {{#if photoView}}
-        {{> Template.dynamic template="rea.photo.modal"}}
+    {{#if slider}}
+        {{> Template.dynamic template="rea.albums.slider.modal"}}
     {{/if}}
 </template>

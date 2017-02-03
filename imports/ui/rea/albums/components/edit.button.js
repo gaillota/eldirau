@@ -7,6 +7,9 @@ import './edit.button.html';
 const templateName = "rea.albums.edit.button";
 
 Template[templateName].helpers({
+    type() {
+        return Template.currentData().type || 'warning';
+    },
     text() {
         return Template.currentData().text || 'Edit';
     }

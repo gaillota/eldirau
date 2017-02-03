@@ -13,6 +13,20 @@ FlowRouter.route('/', {
     }
 });
 
+FlowRouter.route('/my-albums', {
+    name: 'rea.my-albums',
+    action() {
+        BlazeLayout.render('layout', {page: 'rea.index', section: 'rea.albums.section.my-albums'});
+    }
+});
+
+FlowRouter.route('/shared-with-me', {
+    name: 'rea.shared-with-me',
+    action() {
+        BlazeLayout.render('layout', {page: 'rea.index', section: 'rea.albums.section.shared-with-me'});
+    }
+});
+
 const albumGroup = FlowRouter.group({
     prefix: '/albums'
 });
@@ -32,13 +46,8 @@ albumGroup.route('/:albumId/page/:page', {
 });
 
 albumGroup.route('/:albumId/photo/:photoId', {
-    name: 'rea.albums.photo.view',
+    name: 'rea.albums.photo.slider',
     action() {
-        Session.set('photo.view', true);
-
-        BlazeLayout.render('layout', {page: 'rea.albums.gallery'});
+        BlazeLayout.render('layout', {page: 'rea.albums.gallery', slider: true});
     },
-    triggersExit: [() => {
-        Session.set('photo.view', false);
-    }]
 });
