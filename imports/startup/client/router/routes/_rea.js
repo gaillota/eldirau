@@ -1,6 +1,5 @@
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {BlazeLayout} from 'meteor/kadira:blaze-layout';
-import {Session} from 'meteor/session';
 
 import '../../../../ui/layout';
 import '../../../../ui/rea/index';

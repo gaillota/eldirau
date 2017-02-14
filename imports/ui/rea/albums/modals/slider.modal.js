@@ -1,14 +1,14 @@
 import {Template} from "meteor/templating";
 import {$} from 'meteor/jquery';
-import {ReactiveVar} from 'meteor/reactive-var';
+import {ReactiveDict} from 'meteor/reactive-dict';
 import {FlowRouter} from "meteor/kadira:flow-router";
 import {AutoForm} from 'meteor/aldeed:autoform';
 
 import {Photos} from '../../../../api/photos/photos';
-import {PhotoRepository} from '../../../../startup/services';
+import {PhotoRepository} from '../../../../startup/repositories';
 import {form as PhotoForm} from '../../../../startup/common/forms/albums/album.form';
-import {update, remove} from '../../../../api/photos/methods';
-import {NotificationService} from '../../../../startup/services';
+import {update, remove, like, comment, uncomment} from '../../../../api/photos/methods';
+import displayError from '../../../lib/displayError';
 
 const templateName = "rea.albums.slider.modal";
 
@@ -22,9 +22,11 @@ Template[templateName].onCreated(function () {
             FlowRouter.go('rea.albums.gallery', {albumId: this.getAlbumId()});
         }
     };
-    this.editing = new ReactiveVar();
-    this.showEditForm = () => this.editing.set(true);
-    this.hideEditForm = () => this.editing.set(undefined);
+    this.state = new ReactiveDict();
+    this.isState = (name) => this.state.get(name);
+    this.showEditForm = () => this.state.set('editing', true);
+    this.hideEditForm = () => this.state.set('editing', undefined);
+    this.toggleShift = () => this.state.set('shift', !this.isState('shift'));
 
     this.autorun(() => {
         this.subscribe('photo.view', this.getPhotoId());
@@ -77,10 +79,39 @@ Template[templateName].helpers({
         return userId === Meteor.userId();
     },
     editing() {
-        return Template.instance().editing.get();
+        return Template.instance().isState('editing');
     },
     photoForm() {
         return PhotoForm;
+    },
+    likes() {
+        const likes = this.meta.likes;
+
+        if (!likes || !likes.length) {
+            return;
+        }
+
+        let text = '';
+        if (likes.length < 4) {
+            likes.forEach(like => {
+                text += `${Meteor.users.findOne(like).fullName()}, `;
+            });
+            text = text.trim().slice(0, -1);
+            text += ' like this.';
+        } else {
+            text = `${likes.length} likes.`;
+        }
+
+        return text;
+    },
+    comments() {
+        return this.meta.comments;
+    },
+    author() {
+        return Meteor.users.findOne(this.userId);
+    },
+    isAuthor() {
+        return this.userId === Meteor.userId();
     }
 });
 
@@ -99,11 +130,7 @@ Template[templateName].events({
         event.preventDefault();
 
         if (confirm('Are you sure you want to delete this photo ?')) {
-            remove.call({photoId: template.getPhotoId()}, (error) => {
-                if (error) {
-                    NotificationService.error(error.toString());
-                }
-            });
+            remove.call({photoId: template.getPhotoId()}, displayError);
             template.closeModal();
         }
     },
@@ -111,6 +138,52 @@ Template[templateName].events({
         event.preventDefault();
 
         template.hideEditForm();
+    },
+    'click .js-like-photo'(event, template) {
+        event.preventDefault();
+
+        like.call({photoId: template.getPhotoId()});
+    },
+    'keydown .js-comment-input'(event, template) {
+        switch (event.keyCode) {
+            case 13:
+                // Enter
+                if (!template.isState('shift')) {
+                    event.preventDefault();
+                    const text = event.target.value.trim();
+                    if (text) {
+                        comment.call({
+                            photoId: template.getPhotoId(),
+                            text: event.target.value
+                        }, displayError);
+                        event.target.value = '';
+                    } else {
+                        console.log('empty text');
+                    }
+                }
+                break;
+            case 16:
+                // Shift
+                if (!template.isState('shift')) {
+                    template.toggleShift();
+                }
+                break;
+            default:
+                break;
+        }
+    },
+    'keyup .js-comment-input'(event, template) {
+        if (event.keyCode === 16) {
+            template.toggleShift();
+        }
+    },
+    'click .js-delete-comment'(event, template) {
+        event.preventDefault();
+
+        uncomment.call({
+            photoId: template.getPhotoId(),
+            commentId: this.commentId
+        }, displayError);
     }
 });
 
@@ -121,11 +194,7 @@ AutoForm.addHooks('photo.modal.edit', {
 
         doc.photoId = template.getPhotoId();
 
-        update.call(doc, (error) => {
-            if (error) {
-                NotificationService.error(error.toString());
-            }
-        });
+        update.call(doc, displayError);
         template.hideEditForm();
     }
 });

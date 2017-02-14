@@ -1,17 +1,20 @@
 <template name="uploader">
     <div class="uploader">
         <div class="uploader__header">
-            <div class="heading_title">Uploading <span class="album_name">{{uploadCount}}/{{filesCount}}</span></div>
+            <div class="heading_title">Uploading <span class="album_name">{{totalCount}}</span> photos</div>
             <button class="button is-small reduce">
                 <span class="icon is-small">
-                    <i class="fa fa-{{reduceIcon}}"></i>
+                    <i class="fa fa-{{minimizeIcon}}"></i>
                 </span>
             </button>
         </div>
-        <div class="uploader__body {{hidden}}">
+        <div class="uploader__body {{minimized}}">
             <div class="uploader__body__content">
-                {{#with currentFile}}
+                {{#with currentUpload}}
                     <div class="columns">
+                        <div class="column is-narrow text-overflow-hidden" style="width: 150px;">
+                            {{file.name}}
+                        </div>
                         <div class="column" style="display: flex; align-items: center;">
                             {{#unless done}}
                                 <progress class="progress is-primary" value="{{progress}}"
@@ -33,9 +36,22 @@
                             </p>
                         </div>
                     </div>
-                {{else}}
-                    No upload is running
                 {{/with}}
+                {{#each photo in pendingUploads}}
+                    <div class="columns">
+                        <div class="column is-narrow text-overflow-hidden" style="width: 150px;">
+                            {{photo.filename}}
+                        </div>
+                        <div class="column" style="display: flex; align-items: center;">
+                            <progress class="progress is-primary" value="0"
+                                      max="100">0%
+                            </progress>
+                        </div>
+                        <div class="column is-narrow">
+                            <button class="uploader-action js-upload-cancel"></button>
+                        </div>
+                    </div>
+                {{/each}}
             </div>
             <div class="uploader__body__footer">
                 <div class="control is-grouped">

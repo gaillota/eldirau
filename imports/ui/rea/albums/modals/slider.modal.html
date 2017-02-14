@@ -1,6 +1,7 @@
 <template name="rea.albums.slider.modal">
     <div class="modal is-active photo_modal">
         <div class="modal-background js-close"></div>
+        <button class="modal-close js-close"></button>
         <div class="modal-content">
             {{#with photo}}
                 <div class="photo-container">
@@ -22,11 +23,10 @@
                     </div>
                 </div>
                 <div class="photo-details">
-                    <button class="modal-close js-close"></button>
                     {{#with owner photo.userId}}
-                        <article class="media" style="margin-bottom: 15px;">
+                        <article class="media" style="margin-bottom: 15px; margin-top: 20px;">
                             <figure class="media-left">
-                                <p class="image is-48x48">
+                                <p class="image is-64x64">
                                     <img src="{{gravatarUrl this.emails.[0].address}}">
                                 </p>
                             </figure>
@@ -65,6 +65,9 @@
                                 </p>
                             </div>
                         {{/if}}
+                        <p>
+                            <button class="button is-link is-small js-like-photo">Like</button>
+                        </p>
                     {{else}}
                         {{#autoForm schema=photoForm id="photo.modal.edit" doc=photo.meta}}
                             <label class="label">{{afFieldLabelText name="name"}}</label>
@@ -87,6 +90,47 @@
                             </p>
                         {{/autoForm}}
                     {{/unless}}
+                    <div class="photo-interact">
+                        <p class="likes">{{likes}}</p>
+                        <div class="comments">
+                            {{#each comments}}
+                                <article class="media comment">
+                                    <figure class="media-left">
+                                        <p class="image is-48x48">
+                                            <img src="{{gravatarUrl author.emails.[0].address}}">
+                                        </p>
+                                    </figure>
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p>
+                                                <strong>{{author.fullName}}</strong>
+                                                <small>{{formatDateRelative postedAt}}</small>
+                                                <br>
+                                                {{text}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {{#if isAuthor}}
+                                        <div class="media-right">
+                                            <button class="delete js-delete-comment"></button>
+                                        </div>
+                                    {{/if}}
+                                </article>
+                            {{/each}}
+                            <article class="media">
+                                <figure class="media-left">
+                                    <p class="image is-32x32">
+                                        <img src="{{gravatarUrl}}">
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <p class="control">
+                                        <textarea class="textarea js-comment-input" placeholder="Add a comment..." style="min-height: 90px;"></textarea>
+                                    </p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
                 </div>
             {{/with}}
         </div>

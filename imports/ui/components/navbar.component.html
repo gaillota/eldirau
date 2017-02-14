@@ -7,15 +7,20 @@
                         <a class="nav-item is-brand" href="{{pathFor 'rea.index'}}">
                             {{> logo}}
                         </a>
-                        {{#if currentUser}}
-                            <!--{{#if hasRole 'ALBUM'}}-->
+                        {{#with currentUser}}
+                            {{#if hasRole 'ALBUM' _id}}
                                 <span class="nav-item">
                                     <a href="#" class="button is-primary js-create-album">
                                         New album
                                     </a>
                                 </span>
-                            <!--{{/if}}-->
-                        {{/if}}
+                            {{/if}}
+                            {{#if hasRole 'ADMIN' _id}}
+                                <a href="{{pathFor 'admin'}}" class="nav-item">
+                                    Administration
+                                </a>
+                            {{/if}}
+                        {{/with}}
                     </div>
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <span id="nav-toggle" class="nav-toggle {{active}}">

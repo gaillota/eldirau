@@ -10,7 +10,6 @@ import {Photos} from '../../../api/photos/photos';
 import {remove as removePhoto} from '../../../api/photos/methods';
 import {hasRole} from '../../../startup/utilities';
 import {NotificationService} from '../../../startup/services';
-import {UploadManager} from '../../../startup/client/services/_upload.manager';
 
 import './gallery.html';
 
@@ -51,12 +50,14 @@ Template[templateName].onCreated(function () {
                 },
                 onError: function (error, file) {
                     NotificationService.error(`Error while uploading ${file.name}: ${error}`);
+                    template.currentFile.set(false);
                 }
             }).on('end', function (error, file) {
                 if (error) {
                     NotificationService.error(`Error while uploading ${file.name}: ${error}`);
                 }
 
+                template.currentFile.set(false);
                 template.upload();
             });
         }
@@ -149,26 +150,33 @@ Template[templateName].helpers({
     currentPage(page) {
         return Template.instance().getPage() === page && 'is-current';
     },
+    likesCount() {
+        const likes = this.meta.likes || [];
+
+        return likes.length;
+    },
+    commentsCount() {
+        const comments = this.meta.comments || [];
+
+        return comments.length;
+    }
 });
 
 Template[templateName].events({
     'change #photos'(event, template) {
         // Get files selected
         const files = event.currentTarget.files;
-        // Using lodash _.each because FileList is not an Array
-        _.each(files, file => {
-            // // Add file to the stack
-            // template.stack.push(file);
-            //
-            // // Update total files count
-            // template.state.set('totalUploads', template.state.get('totalUploads') + 1);
 
-            UploadManager.addFileToQueue({file, albumId: template.getAlbumId()}, false);
+        _.each(files, file => {
+            // Add file to the stack
+            template.stack.push(file);
+
+            // Update total files count
+            template.state.set('totalUploads', template.state.get('totalUploads') + 1);
         });
 
-        UploadManager.start();
-        // // Start the upload
-        // template.upload();
+        // Start the upload
+        template.upload();
     },
     'click .js-remove-photo'(event) {
         event.preventDefault();

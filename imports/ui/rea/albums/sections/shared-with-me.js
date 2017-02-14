@@ -1,7 +1,7 @@
 import {Template} from "meteor/templating";
 import {ReactiveVar} from 'meteor/reactive-var';
 
-import {AlbumRepository} from '../../../../startup/services';
+import {AlbumRepository} from '../../../../startup/repositories';
 
 import './shared-with-me.html';
 

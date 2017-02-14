@@ -11,12 +11,10 @@ Meteor.publishComposite('users.search', (search) => {
                 const pattern = new RegExp(search);
                 const fields = ['emails.0.address', 'profile.firstName', 'profile.lastName'];
                 query["$or"] = fields.map(f => {
-                    let o = {};
+                    const o = {};
                     o[f] = pattern;
                     return o;
                 });
-
-                console.log(query);
             }
 
             return Meteor.users.find(query, {
@@ -28,29 +26,27 @@ Meteor.publishComposite('users.search', (search) => {
     }
 });
 
-Meteor.publish("admin.accounts", function adminAccounts() {
-    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+Meteor.publish('users.admin.count', function () {
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'ADMIN')) {
         return this.ready();
     }
 
-    const nonAdmin = {
-        roles: {
-            $ne: 'admin'
-        }
-    };
+    Counts.publish(this, 'users.admin.count', Meteor.users.find());
 
-    Counts.publish(this, "counts.accounts", Meteor.users.find(nonAdmin));
+    return this.ready();
+});
 
-    return Meteor.users.find(nonAdmin, {
-        fields: {
-            createdAt: 1,
-            username: 1,
-            emails: 1,
-            profile: 1,
-            status: 1,
-            roles: 1,
-            lastConnectionAt: 1,
-            disabled: 1
-        }
-    });
+Meteor.publish('users.admin', function (userId) {
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'ADMIN')) {
+        return this.ready();
+    }
+
+    let query = {};
+    if (userId) {
+        query = {
+            userId
+        };
+    }
+
+    return Meteor.users.find(query);
 });

@@ -1,31 +1,38 @@
 import {Template} from "meteor/templating";
 import {ReactiveVar} from 'meteor/reactive-var';
 
-import {UploadManager} from '../../startup/services';
+import {UploadManager} from '../../startup/client/services/upload.manager';
 
 import './uploader.component.html';
 
 const templateName = "uploader";
 
 Template[templateName].onCreated(function () {
-    this.hidden = new ReactiveVar(false);
+    this.minimized = new ReactiveVar(false);
 });
 
 Template[templateName].helpers({
-    uploadCount() {
-        return UploadManager.getUploadCount();
+    totalCount() {
+        return UploadManager.getTotalCount();
     },
-    filesCount() {
-        return UploadManager.getFilesCount();
+    minimized() {
+        return Template.instance().minimized.get() && 'is-hidden';
     },
-    hidden() {
-        return Template.instance().hidden.get() && 'is-hidden';
+    minimizeIcon() {
+        return Template.instance().minimized.get() ? 'plus' : 'minus';
     },
-    reduceIcon() {
-        return Template.instance().hidden.get() ? 'plus' : 'minus';
+    currentUpload() {
+        return UploadManager.getCurrentUpload()
     },
-    currentFile() {
-        return UploadManager.getCurrentFile();
+    pendingUploads() {
+        return UploadManager.getPendingUpload();
+    },
+    progress() {
+        // Reactive var is broken bro !
+        this.progress.get();
+    },
+    done() {
+        return this.state === 'completed';
     }
 });
 
@@ -33,6 +40,6 @@ Template[templateName].events({
     'click .reduce'(event, template) {
         event.preventDefault();
 
-        template.hidden.set(!template.hidden.get());
+        template.minimized.set(!template.minimized.get());
     }
 });

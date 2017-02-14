@@ -1,0 +1,36 @@
+@loader-size: 40px;
+@loader-thickness: 4px;
+@loader-color: #0052ff;
+@loader-loop-time: 1s;
+
+.loader-wrapper {
+    width: 200px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.loader {
+    margin: 0 auto;
+    width: @loader-size;
+    height: @loader-size;
+    border: @loader-thickness solid #F2F2F2;
+    border-top: @loader-thickness solid @loader-color;
+    border-radius: 50%;
+    animation: spin @loader-loop-time linear infinite;
+}
+
+.holy-molly {
+    margin-top: 10px;
+    font-size: 1.4em;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}

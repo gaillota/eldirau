@@ -1,0 +1,37 @@
+<template name="admin.users.roles.modal">
+    <div class="modal {{isActive}}">
+        <div class="modal-background js-hide-modal"></div>
+        <div class="modal-card is-rounded">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    Roles
+                </p>
+                <button class="delete js-hide-modal"></button>
+            </header>
+            <section class="modal-card-body">
+                {{#each roles}}
+                    <div class="level js-toggle-share" style="cursor:pointer;">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <p class="subtitle is-5">
+                                    <strong>{{this.short}}</strong> - {{this.long}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <p class="control">
+                                <label for="{{this.role}}_shared" class="checkbox">
+                                    <input type="checkbox" id="{{this.role}}" checked="{{checked}}">
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                {{/each}}
+            </section>
+            <footer class="modal-card-foot">
+                <button type="button" class="button is-primary js-save">Save changes</button>
+                <button type="button" class="button js-hide-modal">Cancel</button>
+            </footer>
+        </div>
+    </div>
+</template>

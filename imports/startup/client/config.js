@@ -41,7 +41,7 @@ AutoForm.addHooks(null, {
             return;
         }
 
-        NotificationService.error(error.toString());
+        NotificationService.error(error.reason || error.toString());
     }
 });
 

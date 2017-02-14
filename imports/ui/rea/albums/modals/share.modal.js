@@ -23,7 +23,7 @@ Template[templateName].onCreated(function() {
     this.autorun(() => {
         const album = Albums.findOne(this.getAlbumId());
         this.state.set('grantedUsersIds', album && album.grantedUsersIds || []);
-    })
+    });
 });
 
 Template[templateName].helpers({

@@ -3,16 +3,9 @@
     {{> navbar }}
 
     {{#if loggingIn}}
-        {{> loading}}
     {{else}}
         {{> Template.dynamic template=page}}
     {{/if}}
-
-    {{#each upload in uploads}}
-        <div class="uploader-container">
-            {{> uploader upload=upload}}
-        </div>
-    {{/each}}
 
     <!-- Alerts component-->
     {{> sAlert}}

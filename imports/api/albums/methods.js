@@ -63,17 +63,11 @@ export const remove = new ValidatedMethod({
         }
     ],
     run({albumId}) {
-        Photos.update({
-            albumId: albumId
-        }, {
+        return Albums.update(albumId, {
             $set: {
-                "meta.deletedAt": new Date()
+                deletedAt: new Date()
             }
-        }, {
-            multi: true
         });
-
-        return Albums.remove(albumId);
     }
 });
 

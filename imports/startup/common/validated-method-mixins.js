@@ -18,7 +18,7 @@ ValidatedMethod.mixins.isLoggedIn = function (options) {
 
 ValidatedMethod.mixins.isAdmin = function (options) {
     options.checkRoles = {
-        roles: ['admin'],
+        roles: ['ADMIN'],
         rolesError: {
             error: 'not-allowed',
             message: 'You are not allowed to call this method',//Optional

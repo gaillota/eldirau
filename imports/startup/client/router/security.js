@@ -14,12 +14,9 @@ FlowRouter.triggersFunctions = {
         }
     },
     isAdmin(context, redirect) {
-        if (!Meteor.loggingIn() && !Meteor.userId()) {
-            setDispatcherPath(context.path);
-            redirect('public.auth.login');
-        } else if (!Roles.userIsInRole(Meteor.userId(), 'admin')) {
+        if (!Meteor.loggingIn() && !Roles.userIsInRole(Meteor.userId(), 'ADMIN')) {
             NotificationService.error('You must be admin to access this section.');
-            redirect('public.index');
+            redirect('rea.index');
         }
     }
 };

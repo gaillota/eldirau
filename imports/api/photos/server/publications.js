@@ -1,8 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
+import {Counts} from 'meteor/tmeasday:publish-counts';
 
 import {Photos} from '../photos';
-import {PhotoRepository} from '../../../startup/services';
+import {PhotoRepository} from '../../../startup/repositories';
 import {Albums} from '../../albums/albums';
 
 Meteor.publishComposite('photos.album', (albumId, page = 1, limit = 12) => {
@@ -50,11 +51,11 @@ Meteor.publishComposite('photo.view', (photoId) => {
                 return this.ready();
             }
 
+            const nonDeleted = {$exists: false};
             const photo = Photos.collection.find({
                 _id: photoId,
-                "meta.deletedAt": {
-                    $exists: false
-                }
+                "meta.deletedAt": nonDeleted,
+                "meta.comments.deletedAt": nonDeleted
             });
 
             if (!photo.count()) {
@@ -72,14 +73,51 @@ Meteor.publishComposite('photo.view', (photoId) => {
         children: [
             {
                 find(photo) {
+                    // Previous photo
                     return PhotoRepository.findPreviousPhotoFrom(photo);
                 }
             },
             {
                 find(photo) {
+                    // Next photo
                     return PhotoRepository.findNextPhotoFrom(photo);
+                }
+            },
+            {
+                find(photo) {
+                    // Likes
+                    const likes = photo.meta.likes;
+                    if (likes && likes.length > 0 && likes.length < 4) {
+                        return Meteor.users.find({
+                            _id: {
+                                $in: likes
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                find(photo) {
+                    const comments = photo.meta.comments;
+                    if (comments && !!comments.length) {
+                        return Meteor.users.find({
+                            _id: {
+                                $in: comments.map(c => c.userId)
+                            }
+                        });
+                    }
                 }
             }
         ]
     }
+});
+
+Meteor.publish('photos.admin.count', function () {
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'ADMIN')) {
+        return this.ready();
+    }
+
+    Counts.publish(this, 'photos.admin.count', Photos.collection.find({"meta.deletedAt": {$exists: false}}));
+
+    return this.ready();
 });

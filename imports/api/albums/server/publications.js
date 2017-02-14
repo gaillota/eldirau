@@ -3,7 +3,7 @@ import {Counts} from "meteor/tmeasday:publish-counts";
 
 import {Albums} from "../albums";
 import {Photos} from "../../photos/photos";
-import {AlbumRepository} from '../../../startup/services';
+import {AlbumRepository} from '../../../startup/repositories';
 
 Meteor.publishComposite('albums.user', (limit = 3) => {
     return {
@@ -138,4 +138,18 @@ Meteor.publishComposite('shared.albums.count', () => {
             return this.ready();
         }
     }
+});
+
+Meteor.publish('albums.admin.count', function () {
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'ADMIN')) {
+        return this.ready();
+    }
+
+    Counts.publish(this, 'albums.admin.count', Albums.find({
+        deletedAt: {
+            $exists: false
+        }
+    }));
+
+    return this.ready();
 });

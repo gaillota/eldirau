@@ -9,9 +9,33 @@ import {RegistrationForm, ForgotPasswordForm} from '../../startup/common/forms/a
 
 // export * from './admin-methods';
 
+const mixins = ValidatedMethod.mixins;
+
+export const bootstrap = new ValidatedMethod({
+    name: 'users.bootstrap',
+    mixins: [mixins.provide],
+    validate: null,
+    provide: function() {
+        return Meteor.users.findOne({}, {
+            sort: {
+                createdAt: 1
+            }
+        });
+    },
+    run({}, user) {
+        if (Roles.getUsersInRole('ADMIN').count()) {
+            throw new Meteor.Error("not-authorized", "A user is already admin");
+        }
+
+        Roles.addUsersToRoles(user, 'ADMIN');
+
+        return 'First registered user set as ADMIN';
+    }
+});
+
 export const register = new ValidatedMethod({
     name: 'users.register',
-    mixins: [ValidatedMethod.mixins.checkSchema],
+    mixins: [mixins.checkSchema],
     schema: [RegistrationForm],
     run(doc) {
         let options = _.pick(doc, 'email password'.split(' '));
@@ -33,7 +57,7 @@ export const register = new ValidatedMethod({
 
 export const forgot = new ValidatedMethod({
     name: 'users.forgot',
-    mixins: [ValidatedMethod.mixins.checkSchema, ValidatedMethod.mixins.provide],
+    mixins: [mixins.checkSchema, mixins.provide],
     schema: [ForgotPasswordForm],
     provide: function({email}) {
         return Accounts.findUserByEmail(email);
@@ -46,7 +70,7 @@ export const forgot = new ValidatedMethod({
 
 // export const edit = new ValidatedMethod({
 //     name: 'users.profile.edit',
-//     mixins: [ValidatedMethod.mixins.isLoggedIn, ValidatedMethod.mixins.checkSchema],
+//     mixins: [mixins.isLoggedIn, mixins.checkSchema],
 //     schema: UpdateProfileForm,
 //     run(profile) {
 //         const user = Meteor.users.findOne(this.userId);
@@ -63,7 +87,7 @@ export const forgot = new ValidatedMethod({
 
 export const harakiri = new ValidatedMethod({
     name: 'users.harakiri',
-    mixins: [ValidatedMethod.mixins.isLoggedIn, ValidatedMethod.mixins.checkSchema],
+    mixins: [mixins.isLoggedIn, mixins.checkSchema],
     schema: {
         digest: {
             type: String
@@ -85,5 +109,23 @@ export const harakiri = new ValidatedMethod({
         }
 
         return Meteor.users.remove(this.userId);
+    }
+});
+
+export const updateRoles = new ValidatedMethod({
+    name: 'admin.users.roles',
+    mixins: [mixins.isLoggedIn, mixins.isAdmin, mixins.checkSchema],
+    schema: {
+        userId: {
+            type: String,
+            regEx: SimpleSchema.RegEx.Id
+        },
+        roles: {
+            type: [String],
+            optional: true
+        }
+    },
+    run({userId, roles}) {
+        return Roles.setUserRoles(userId, roles);
     }
 });

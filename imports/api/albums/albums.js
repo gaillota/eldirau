@@ -46,6 +46,10 @@ Albums.schema = new SimpleSchema({
         type: Date,
         optional: true
     },
+    deletedAt: {
+        type: Date,
+        optional: true
+    },
     previewId: {
         type: String,
         regEx: SimpleSchema.RegEx.Id,

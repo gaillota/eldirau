@@ -1,7 +1,7 @@
 .uploader-container {
     position: fixed;
     right: 0;
-    bottom: -1px;
+    bottom: 30px;
     padding: 0 50px;
     display: flex;
     flex-flow: row-reverse wrap;
@@ -19,6 +19,7 @@
 
         &__header {
             flex-grow: 0;
+            flex-shrink: 0;
             display: flex;
             flex-direction: row;
             padding: 8px 12px;
@@ -49,6 +50,8 @@
             }
 
             &__content {
+                overflow-y: auto;
+                overflow-x: hidden;
                 padding: 10px;
 
                 table tbody tr td:nth-child(2) {
