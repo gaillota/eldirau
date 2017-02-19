@@ -68,11 +68,11 @@ Albums.helpers({
     owner() {
         return Meteor.users.findOne(this.ownerId);
     },
-    preview() {
-        return this.previewId ? Photos.collection.find(this.previewId) : this.photos(1);
+    preview(fetch = false) {
+        return this.previewId ? Photos.collection.findOne(this.previewId) : this.photos(1, fetch);
     },
-    photos(limit = 0) {
-        return Photos.collection.find({
+    photos(limit = 0, fetch = false) {
+        const cursor = Photos.collection.find({
             "meta.albumId": this._id,
             "meta.deletedAt": {
                 $exists: false
@@ -83,6 +83,8 @@ Albums.helpers({
             },
             limit
         });
+
+        return fetch ? cursor.fetch() : cursor;
     },
     hasAccess(userId) {
         return this.ownerId === userId || this.grantedUsersIds.indexOf(userId) >= 0 || Roles.userIsInRole(userId, 'ALBUM');

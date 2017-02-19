@@ -1,10 +1,13 @@
 <template name="public.auth.register">
-    <section class="hero is-fullheight is-primary is-bold">
+    <section class="hero">
         <div class="hero-body">
             <div class="container">
+                <figure class="image is-128x128" style="margin: 0 auto 20px;">
+                    <img src="{{assets 'assets/images/logo.jpg'}}" alt="logo">
+                </figure>
                 <div class="columns">
                     <div class="column is-4 is-offset-4">
-                        <h1 class="title">Register an account</h1>
+                        <h1 class="title has-text-centered">Register an account</h1>
                         <div class="box">
                             {{#autoForm schema=registrationForm id="public.auth.register" type="method" meteormethod="users.register"}}
                                 <label class="label">{{afFieldLabelText name="firstName"}}</label>

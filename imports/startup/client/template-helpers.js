@@ -36,8 +36,20 @@ const helpers = {
     assets(path) {
         return Meteor.absoluteUrl(path);
     },
-    userStatus(user) {
-        user = user || this;
+    userConnectionStatus() {
+        if (!this.status) {
+            return 'gray';
+        }
+
+        if (this.status.online) {
+            return '#5cb85c';
+        } else if (this.status.idle) {
+            return '#f0ad4e';
+        } else {
+            return 'gray';
+        }
+    },
+    userStatus(user = this) {
         if (user.disabled) {
             return {
                 type: 'danger',

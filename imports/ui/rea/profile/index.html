@@ -1,19 +1,42 @@
 <template name="rea.profile">
     <section class="section">
         <div class="container">
+            <h1 class="title">My profile</h1>
+            <hr>
             <div class="columns">
-                <div class="column is-3 has-text-centered">
-                    {{#with currentUser}}
-                        <figure class="image is-square">
-                            <img src="{{gravatarUrl}}" alt="gravatar">
-                        </figure>
-                        <h1 class="title">
-                            {{fullName}}
-                        </h1>
-                    {{/with}}
-                </div>
+                {{#with currentUser}}
+                    <div class="column">
+                        <nav class="panel">
+                            <div class="panel-heading">Profile</div>
+                            <div class="panel-block">
+                                <span class="panel-icon">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                                {{fullName}}
+                            </div>
+                            <div class="panel-block">
+                                <span class="panel-icon">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                                {{emails.[0].address}}
+                            </div>
+                            <div class="panel-block">
+                                <span class="panel-icon">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                                ********
+                            </div>
+                            <div class="panel-block">
+                                <span class="panel-icon">
+                                    <i class="fa fa-registered"></i>
+                                </span>
+                                {{formatDate createdAt}}
+                            </div>
+                        </nav>
+                    </div>
+                {{/with}}
                 <div class="column">
-                    <h1 class="title">Change password</h1>
+                    <h2 class="subtitle">Change password</h2>
                     {{#autoForm schema=changePasswordForm id="rea.profile.change-password" resetOnSuccess=true}}
                         <label class="label">{{afFieldLabelText name="oldPassword"}}</label>
                         <p class="control">

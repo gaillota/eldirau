@@ -3,7 +3,7 @@ import {_} from 'lodash';
 
 export const PhotoRepository = {
     _findQuery(photoOrPhotoId, $operator, sort, limit = 1) {
-        if (!_.isString(photoOrPhotoId) || _.isObject(photoOrPhotoId)) {
+        if (!_.isString(photoOrPhotoId) && !_.isObject(photoOrPhotoId)) {
             return;
         }
 

@@ -8,7 +8,7 @@ const templateName = "rea.albums.remove.button";
 
 Template[templateName].helpers({
     type() {
-        return Template.currentData().type || 'danger';
+        return Template.currentData().type;
     },
     text() {
         return Template.currentData().text || 'Remove';

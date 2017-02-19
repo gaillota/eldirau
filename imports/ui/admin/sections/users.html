@@ -19,36 +19,84 @@
 
         <!-- Right side -->
         <div class="level-right">
-            <!--<p class="level-item"><strong>All</strong></p>-->
-            <!--<p class="level-item"><a>Published</a></p>-->
-            <!--<p class="level-item"><a>Drafts</a></p>-->
-            <!--<p class="level-item"><a>Deleted</a></p>-->
-            <p class="level-item"><a class="button is-success">Invite</a></p>
+            <p class="level-item"><a class="button is-success js-enroll-user">Invite</a></p>
         </div>
     </nav>
-    <div class="columns">
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Status</th>
+            <th>Roles</th>
+            <th>
+                <span class="icon is-small">
+                    <i class="fa fa-registered"></i>
+                </span>
+            </th>
+            <th>
+                <span class="icon is-small">
+                    <i class="fa fa-sign-in"></i>
+                </span>
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
         {{#each users}}
-            <div class="column is-3">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-square">
-                            <img src="{{gravatarUrl this.emails.[0].address}}" alt="Image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <p class="title is-4">{{this.fullName}}</p>
-                                <p class="subtitle is-6">{{this.emails.[0].address}}</p>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <button class="button is-small is-info js-edit-roles">Roles</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td class="has-text-centered">
+                    <span class="icon is-small">
+                        <i class="fa fa-circle" style="color: {{userConnectionStatus}};"></i>
+                    </span>
+                </td>
+                <td>
+                    <figure class="image is-16x16">
+                        <img src="{{gravatarUrl this.emails.[0].address}}" alt="Image">
+                    </figure>
+                </td>
+                <td>
+                    {{fullName}}
+                </td>
+                <td>
+                    {{this.emails.[0].address}}
+                </td>
+                <td>
+                    {{#with userStatus this}}
+                        <span class="tag is-small is-{{type}}">
+                            <span class="icon is-small">
+                                <i class="fa fa-{{icon}}"></i>
+                            </span>
+                            <span>{{text}}</span>
+                        </span>
+                    {{/with}}
+                </td>
+                <td>
+                    {{#each roles}}
+                        <span class="tag is-light">{{this}}</span>
+                    {{/each}}
+                </td>
+                <td>
+                    {{formatDate createdAt}}
+                </td>
+                <td>
+                    {{formatDateRelative lastConnectionAt}}
+                </td>
+                <td>
+                    {{#if emailNotVerified}}
+                        <button type="button" class="button is-success is-small js-activate-user">
+                            {{> icon name='check' size='is-small'}}
+                            <span>Activate</span>
+                        </button>
+                    {{/if}}
+                    <button class="button is-small is-info js-edit-roles">Roles</button>
+                </td>
+            </tr>
         {{/each}}
-    </div>
+        </tbody>
+    </table>
     {{> Template.dynamic template='admin.users.roles.modal'}}
+    {{> Template.dynamic template='admin.users.enroll.modal'}}
 </template>

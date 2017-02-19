@@ -2,6 +2,7 @@ import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 import {BlazeLayout} from 'meteor/kadira:blaze-layout';
 import {AutoForm} from 'meteor/aldeed:autoform';
 import {sAlert} from "meteor/juliancwirko:s-alert";
+import {ActiveRoute} from 'meteor/zimme:active-route';
 import {NProgress} from 'meteor/mrt:nprogress';
 
 import {NotificationService} from '../services';
@@ -50,6 +51,11 @@ sAlert.config({
     effect: 'scale',
     position: 'bottom-right',
     onRouteClose: false
+});
+
+ActiveRoute.configure({
+    activeClass: 'is-active',
+    disabledClass: 'is-disabled',
 });
 
 // Hide spinner for NProgress bar

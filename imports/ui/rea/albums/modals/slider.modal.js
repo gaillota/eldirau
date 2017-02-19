@@ -5,9 +5,11 @@ import {FlowRouter} from "meteor/kadira:flow-router";
 import {AutoForm} from 'meteor/aldeed:autoform';
 
 import {Photos} from '../../../../api/photos/photos';
+import {Comments} from '../../../../api/comments/comments';
 import {PhotoRepository} from '../../../../startup/repositories';
-import {form as PhotoForm} from '../../../../startup/common/forms/albums/album.form';
-import {update, remove, like, comment, uncomment} from '../../../../api/photos/methods';
+import {form as PhotoForm} from '../../../../startup/common/forms/photos/photo.form';
+import {update, remove, like} from '../../../../api/photos/methods';
+import {comment, uncomment} from '../../../../api/comments/methods';
 import displayError from '../../../lib/displayError';
 
 const templateName = "rea.albums.slider.modal";
@@ -17,11 +19,15 @@ import './slider.modal.html';
 Template[templateName].onCreated(function () {
     this.getPhotoId = () => FlowRouter.getParam("photoId");
     this.getAlbumId = () => FlowRouter.getParam('albumId');
+    this.getPreviousPhoto = () => PhotoRepository.findPreviousPhotoFrom(this.getPhotoId()).fetch()[0];
+    this.getNextPhoto = () => PhotoRepository.findNextPhotoFrom(this.getPhotoId()).fetch()[0];
+    this.goTo = photo => photo ? FlowRouter.go('rea.albums.photo.slider', {albumId: this.getAlbumId(), photoId: photo._id}) : '';
     this.closeModal = () => {
         if (this.getAlbumId()) {
             FlowRouter.go('rea.albums.gallery', {albumId: this.getAlbumId()});
         }
     };
+
     this.state = new ReactiveDict();
     this.isState = (name) => this.state.get(name);
     this.showEditForm = () => this.state.set('editing', true);
@@ -29,7 +35,7 @@ Template[templateName].onCreated(function () {
     this.toggleShift = () => this.state.set('shift', !this.isState('shift'));
 
     this.autorun(() => {
-        this.subscribe('photo.view', this.getPhotoId());
+        this.subscribe('photo.view', this.getPhotoId(), displayError);
     });
 });
 
@@ -42,17 +48,11 @@ Template[templateName].onRendered(function () {
                 break;
             case 37:
                 // Left
-                const previousPhoto = PhotoRepository.findPreviousPhotoFrom(this.getPhotoId()).fetch()[0];
-                if (previousPhoto) {
-                    FlowRouter.go('rea.albums.photo.slider', {albumId: this.getAlbumId(), photoId: previousPhoto._id});
-                }
+                this.goTo(this.getPreviousPhoto());
                 break;
             case 39:
                 // Right
-                const nextPhoto = PhotoRepository.findNextPhotoFrom(this.getPhotoId()).fetch()[0];
-                if (nextPhoto) {
-                    FlowRouter.go('rea.albums.photo.slider', {albumId: this.getAlbumId(), photoId: nextPhoto._id});
-                }
+                this.goTo(this.getNextPhoto());
                 break;
         }
     });
@@ -67,13 +67,18 @@ Template[templateName].helpers({
         return Photos.collection.findOne(Template.instance().getPhotoId());
     },
     previousPhoto() {
-        return PhotoRepository.findPreviousPhotoFrom(Template.instance().getPhotoId()).fetch()[0];
+        return Template.instance().getPreviousPhoto();
     },
     nextPhoto() {
-        return PhotoRepository.findNextPhotoFrom(Template.instance().getPhotoId()).fetch()[0];
+        return Template.instance().getNextPhoto();
     },
     owner(userId) {
         return Meteor.users.findOne(userId);
+    },
+    likeButtonActive() {
+        const likes = this.meta.likes || [];
+
+        return likes.indexOf(Meteor.userId()) >= 0 && 'active';
     },
     isOwner(userId) {
         return userId === Meteor.userId();
@@ -85,30 +90,24 @@ Template[templateName].helpers({
         return PhotoForm;
     },
     likes() {
-        const likes = this.meta.likes;
+        const likes = this.meta.likes || [];
 
-        if (!likes || !likes.length) {
+        if (!likes.length) {
             return;
         }
 
-        let text = '';
-        if (likes.length < 4) {
-            likes.forEach(like => {
-                text += `${Meteor.users.findOne(like).fullName()}, `;
-            });
-            text = text.trim().slice(0, -1);
-            text += ' like this.';
-        } else {
-            text = `${likes.length} likes.`;
+        const me = likes.indexOf(Meteor.userId());
+        if (me >= 0) {
+            likes.splice(me, 1);
+            likes.splice(0, 0, Meteor.userId());
         }
 
-        return text;
+        return likes.length < 4 ? `${likes.map(like => like === Meteor.userId() ? 'You' : Meteor.users.findOne(like).fullName()).join(", ")} like this` : `${likes.length} likes.`;
     },
     comments() {
-        return this.meta.comments;
-    },
-    author() {
-        return Meteor.users.findOne(this.userId);
+        return Comments.find({
+            photoId: this._id
+        });
     },
     isAuthor() {
         return this.userId === Meteor.userId();
@@ -120,6 +119,11 @@ Template[templateName].events({
         event.preventDefault();
 
         template.closeModal();
+    },
+    'click .js-photo-next'(event, template) {
+        event.preventDefault();
+
+        template.goTo(template.getNextPhoto());
     },
     'click .js-photo-edit'(event, template) {
         event.preventDefault();
@@ -157,8 +161,6 @@ Template[templateName].events({
                             text: event.target.value
                         }, displayError);
                         event.target.value = '';
-                    } else {
-                        console.log('empty text');
                     }
                 }
                 break;
@@ -177,13 +179,14 @@ Template[templateName].events({
             template.toggleShift();
         }
     },
-    'click .js-delete-comment'(event, template) {
+    'click .js-delete-comment'(event) {
         event.preventDefault();
 
-        uncomment.call({
-            photoId: template.getPhotoId(),
-            commentId: this.commentId
-        }, displayError);
+        if (confirm('Are you sure you want to delete this comment ?')) {
+            uncomment.call({
+                commentId: this._id
+            }, displayError);
+        }
     }
 });
 

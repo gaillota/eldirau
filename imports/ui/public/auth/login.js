@@ -5,7 +5,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 
 import {LoginForm} from '../../../startup/common/forms/auth/_login.form';
 import {NotificationService} from '../../../startup/services/';
-import {getDispatcherPath} from '../../../startup/utilities';
+import {getDispatcherPath, capitalize} from '../../../startup/utilities';
 
 import './login.html';
 
@@ -25,7 +25,7 @@ AutoForm.addHooks(templateName, {
     },
     onSuccess() {
         if (Meteor.user()) {
-            NotificationService.success("Welcome back " + Meteor.user().profile.firstName + " ! :)");
+            NotificationService.success("Welcome back " + capitalize(Meteor.user().profile.firstName) + " ! :)");
         }
         FlowRouter.go(getDispatcherPath() || 'rea.index');
     }

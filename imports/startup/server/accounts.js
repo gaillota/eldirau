@@ -2,6 +2,8 @@ import {Meteor} from 'meteor/meteor';
 import {Accounts} from 'meteor/accounts-base';
 import {_} from 'lodash';
 
+import {capitalize} from '../utilities';
+
 /**
  * Accounts urls
  */
@@ -16,23 +18,23 @@ Accounts.urls.resetPassword = function (token) {
 /**
  * Accounts emails settings
  */
-Accounts.emailTemplates.from = "Eldir.au <no-reply@eldir.au>";
+Accounts.emailTemplates.from = 'Eldirau <no-reply@eldirau.com>';
 
-Accounts.emailTemplates.siteName = "Eldir.au";
+Accounts.emailTemplates.siteName = 'Eldirau';
 
 Accounts.emailTemplates.verifyEmail = {
     subject() {
-        return "Activate your Eldir.au account.";
+        return 'Eldirau - Activate your account now.';
     },
-    text(user, url) {
-        return "Hi " + user.profile.firstName + ",\n\n"
-            + "Welcome on Eldir.au ! :)\n\n"
-            + "Before you can begin, we just need you to do one last thing.\n"
+    html(user, url) {
+        return "Hi " + capitalize(user.profile.firstName) + ",\n\n"
+            + "Welcome on Eldirau ! :)\n\n"
+            + "Before you can begin, we just need you to verify one last thing...\n"
             + "Please follow this link in order to verify your e-mail address and complete your registration :\n\n"
-            + url + ".\n\n"
-            + "If you didn't register on Eldir.au, please ignore this e-mail.\n\n"
+            + "<a href='" + url + "'>" + url + "</a>" + ".\n\n"
+            + "If you didn't register on Ceerebro, please ignore this e-mail.\n\n"
             + "Have an amazing day !\n"
-            + "The Eldir.au Team.";
+            + "The Eldirau Team.";
     }
 };
 

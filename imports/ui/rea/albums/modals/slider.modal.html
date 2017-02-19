@@ -12,112 +12,134 @@
                                                    photoId=previousPhoto._id}}">&lsaquo;</a>
                             {{/if}}
                         </p>
-                        {{#if nextPhoto}}
-                            {{#let path=(pathFor 'rea.albums.photo.slider' albumId=photo.meta.albumId photoId=nextPhoto._id)}}
-                                <a class="photo-link" href="{{path}}"></a>
-                                <p class="next">
-                                    <a href="{{path}}">&rsaquo;</a>
-                                </p>
-                            {{/let}}
-                        {{/if}}
+                        <div class="spacer js-photo-next"></div>
+                        <p class="next">
+                            {{#if nextPhoto}}
+                                <a href="{{pathFor 'rea.albums.photo.slider' albumId=photo.meta.albumId
+                                                   photoId=nextPhoto._id}}">&rsaquo;</a>
+                            {{/if}}
+                        </p>
                     </div>
                 </div>
-                <div class="photo-details">
-                    {{#with owner photo.userId}}
-                        <article class="media" style="margin-bottom: 15px; margin-top: 20px;">
-                            <figure class="media-left">
-                                <p class="image is-64x64">
-                                    <img src="{{gravatarUrl this.emails.[0].address}}">
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p class="title is-5">
-                                        <strong>{{this.fullName}}</strong>
-                                    </p>
-                                    <p class="subtitle is-6">
-                                        {{formatDate photo.meta.uploadedAt 'MMMM Do HH:mm'}}
-                                    </p>
-                                </div>
-                            </div>
-                        </article>
-                    {{/with}}
-                    {{#unless editing}}
-                        <h1 class="title is-4 is-bold name">
-                            {{#with photo.meta.name}}
-                                {{this}}
-                            {{else}}
-                                {{photo.name}}
-                            {{/with}}
-                        </h1>
-                        <h2 class="subtitle title is-6 description">
-                            {{#with photo.meta.description}}
-                                {{this}}
-                            {{/with}}
-                        </h2>
-                        {{#if isOwner photo.userId}}
-                            <div class="control is-grouped">
-                                <p class="control">
-                                    <button class="button is-small is-link js-photo-edit">Edit</button>
-                                </p>
-                                <p class="control">
-                                    <button class="button is-small is-link js-photo-remove">Remove</button>
-                                </p>
-                            </div>
-                        {{/if}}
-                        <p>
-                            <button class="button is-link is-small js-like-photo">Like</button>
-                        </p>
-                    {{else}}
-                        {{#autoForm schema=photoForm id="photo.modal.edit" doc=photo.meta}}
-                            <label class="label">{{afFieldLabelText name="name"}}</label>
-                            <p class="control">
-                                {{> afFieldInput name="name" class="input is-small"}}
-                                <span class="help is-danger">{{{afFieldMessage name='name'}}}</span>
-                            </p>
-                            <label class="label">{{afFieldLabelText name="description"}}</label>
-                            <p class="control">
-                                {{> afFieldInput name="description" class="textarea is-small"}}
-                                <span class="help is-danger">{{{afFieldMessage name='description'}}}</span>
-                            </p>
-                            <p class="control">
-                                <button type="submit" class="button is-small is-success">
-                                    Submit
-                                </button>
-                                <button class="button is-small js-cancel-editing">
-                                    Cancel
-                                </button>
-                            </p>
-                        {{/autoForm}}
-                    {{/unless}}
-                    <div class="photo-interact">
-                        <p class="likes">{{likes}}</p>
-                        <div class="comments">
-                            {{#each comments}}
-                                <article class="media comment">
+                <aside class="photo-details">
+                    <div class="photo-infos">
+                        <div class="owner">
+                            {{#with owner photo.userId}}
+                                <article class="media" style="margin-bottom: 15px; margin-top: 20px;">
                                     <figure class="media-left">
-                                        <p class="image is-48x48">
-                                            <img src="{{gravatarUrl author.emails.[0].address}}">
+                                        <p class="image is-64x64">
+                                            <img src="{{gravatarUrl this.emails.[0].address}}">
                                         </p>
                                     </figure>
                                     <div class="media-content">
                                         <div class="content">
-                                            <p>
-                                                <strong>{{author.fullName}}</strong>
-                                                <small>{{formatDateRelative postedAt}}</small>
-                                                <br>
-                                                {{text}}
+                                            <p class="title is-5">
+                                                <strong>{{this.fullName}}</strong>
+                                            </p>
+                                            <p class="subtitle is-6">
+                                                {{formatDate photo.meta.uploadedAt 'MMMM Do HH:mm'}}
                                             </p>
                                         </div>
                                     </div>
-                                    {{#if isAuthor}}
-                                        <div class="media-right">
-                                            <button class="delete js-delete-comment"></button>
-                                        </div>
-                                    {{/if}}
                                 </article>
-                            {{/each}}
-                            <article class="media">
+                            {{/with}}
+                        </div>
+
+                        {{#unless editing}}
+                            <h1 class="title is-5 is-bold name">
+                                {{#with photo.meta.name}}
+                                    {{this}}
+                                {{else}}
+                                    {{photo.name}}
+                                {{/with}}
+                            </h1>
+                            {{#with photo.meta.description}}
+                                <h2 class="subtitle title is-6 description">
+                                    {{this}}
+                                </h2>
+                            {{/with}}
+                            <div class="controls">
+                                <div class="control is-grouped">
+                                    <p class="control">
+                                        <button class="button is-small like-button {{likeButtonActive}} js-like-photo">
+                                            <span class="icon is-small">
+                                              <i class="fa fa-thumbs-up"></i>
+                                            </span>
+                                            <span>Like</span>
+                                        </button>
+                                    </p>
+                                    {{#if isOwner photo.userId}}
+                                        <p class="control">
+                                            <button class="button is-small edit-button js-photo-edit">Edit</button>
+                                        </p>
+                                        <p class="control">
+                                            <button class="button is-small remove-button js-photo-remove">Remove
+                                            </button>
+                                        </p>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        {{else}}
+                            {{#autoForm schema=photoForm id="photo.modal.edit" doc=photo.meta}}
+                                <label class="label">{{afFieldLabelText name="name"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="name" class="input is-small"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='name'}}}</span>
+                                </p>
+                                <label class="label">{{afFieldLabelText name="description"}}</label>
+                                <p class="control">
+                                    {{> afFieldInput name="description" class="textarea is-small"}}
+                                    <span class="help is-danger">{{{afFieldMessage name='description'}}}</span>
+                                </p>
+                                <p class="control">
+                                    <button type="submit" class="button is-small is-success">
+                                        Submit
+                                    </button>
+                                    <button class="button is-small js-cancel-editing">
+                                        Cancel
+                                    </button>
+                                </p>
+                            {{/autoForm}}
+                        {{/unless}}
+                    </div>
+                    <div class="photo-social">
+                        {{#if likes}}
+                            <p class="likes text-overflow-hidden">
+                                {{likes}}
+                            </p>
+                        {{/if}}
+                        {{#if comments}}
+                            <div class="comments">
+                                {{#each comments}}
+                                    <article class="media comment">
+                                        <figure class="media-left">
+                                            <p class="image is-32x32">
+                                                <img src="{{gravatarUrl author.emails.[0].address}}">
+                                            </p>
+                                        </figure>
+                                        <div class="media-content">
+                                            <div class="content">
+                                                <p class="comment__content">
+                                                    <strong class="comment__content__author">{{author.fullName}}</strong>
+                                                    <small>{{formatDateRelative postedAt}}</small>
+                                                    <br>
+                                                    <span class="comment__content__text">
+                                                        {{text}}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {{#if editableBy currentUser._id }}
+                                            <div class="media-right">
+                                                <button class="delete js-delete-comment"></button>
+                                            </div>
+                                        {{/if}}
+                                    </article>
+                                {{/each}}
+                            </div>
+                        {{/if}}
+                        <div class="comment">
+                            <article class="media comment-input">
                                 <figure class="media-left">
                                     <p class="image is-32x32">
                                         <img src="{{gravatarUrl}}">
@@ -125,13 +147,14 @@
                                 </figure>
                                 <div class="media-content">
                                     <p class="control">
-                                        <textarea class="textarea js-comment-input" placeholder="Add a comment..." style="min-height: 90px;"></textarea>
+                                        <textarea class="textarea js-comment-input" placeholder="Comment..."
+                                                  style="min-height: 90px;"></textarea>
                                     </p>
                                 </div>
                             </article>
                         </div>
                     </div>
-                </div>
+                </aside>
             {{/with}}
         </div>
     </div>

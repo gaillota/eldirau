@@ -4,6 +4,12 @@
     border-radius: @value;
 }
 
+.box-shadow(@inset, @hoff, @voff, @blur, @color) {
+    -webkit-box-shadow: @inset @hoff @voff @blur @blur;
+    -moz-box-shadow: @inset @hoff @voff @blur @blur;
+    box-shadow: @inset @hoff @voff @blur @blur;
+}
+
 .gradient-vertical(@start-color: #555, @end-color: #333, @start-percent: 0%, @end-percent: 100%) {
     background-image: -webkit-linear-gradient(top, @start-color @start-percent, @end-color @end-percent);
     background-image: -o-linear-gradient(top, @start-color @start-percent, @end-color @end-percent);

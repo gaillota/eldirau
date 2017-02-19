@@ -6,8 +6,8 @@ import {Roles} from 'meteor/alanning:roles';
 import {_} from 'lodash';
 
 import {RegistrationForm, ForgotPasswordForm} from '../../startup/common/forms/auth';
-
-// export * from './admin-methods';
+import {AddEmailForm} from '../../startup/common/forms/profile';
+import {EnrollForm} from '../../startup/common/forms/admin/enroll.form';
 
 const mixins = ValidatedMethod.mixins;
 
@@ -68,22 +68,15 @@ export const forgot = new ValidatedMethod({
     }
 });
 
-// export const edit = new ValidatedMethod({
-//     name: 'users.profile.edit',
-//     mixins: [mixins.isLoggedIn, mixins.checkSchema],
-//     schema: UpdateProfileForm,
-//     run(profile) {
-//         const user = Meteor.users.findOne(this.userId);
-//
-//         _.merge(user.profile, profile);
-//
-//         return Meteor.users.update(this.userId, {
-//             $set: {
-//                 "profile": profile
-//             }
-//         });
-//     }
-// });
+export const email = new ValidatedMethod({
+    name: 'users.email',
+    mixins: [mixins.isLoggedIn, mixins.checkSchema, mixins.isServer],
+    schema: AddEmailForm,
+    run({address}) {
+        Accounts.addEmail(this.userId, address);
+        Accounts.sendVerificationEmail(this.userId, address);
+    }
+});
 
 export const harakiri = new ValidatedMethod({
     name: 'users.harakiri',
@@ -112,9 +105,27 @@ export const harakiri = new ValidatedMethod({
     }
 });
 
+export const activate = new ValidatedMethod({
+    name: 'users.activate',
+    mixins: [mixins.isAdmin, mixins.checkSchema],
+    schema: {
+        userId: {
+            type: String,
+            regEx: SimpleSchema.RegEx.Id
+        }
+    },
+    run({userId}) {
+        return Meteor.users.update(userId, {
+            $set: {
+                "emails.0.verified": true
+            }
+        });
+    }
+});
+
 export const updateRoles = new ValidatedMethod({
-    name: 'admin.users.roles',
-    mixins: [mixins.isLoggedIn, mixins.isAdmin, mixins.checkSchema],
+    name: 'users.roles',
+    mixins: [mixins.isAdmin, mixins.checkSchema],
     schema: {
         userId: {
             type: String,
@@ -127,5 +138,24 @@ export const updateRoles = new ValidatedMethod({
     },
     run({userId, roles}) {
         return Roles.setUserRoles(userId, roles);
+    }
+});
+
+export const enroll = new ValidatedMethod({
+    name: 'users.enroll',
+    mixins: [mixins.isLoggedIn, mixins.isAdmin, mixins.checkSchema],
+    schema: EnrollForm,
+    run({firstName, lastName, email}) {
+        const password = Math.random().toString(16).slice(2);
+        const userId = Accounts.createUser({
+            email,
+            password,
+            options: {
+                firstName: firstName.toLowerCase(),
+                lastName: lastName.toLowerCase()
+            }
+        });
+
+        return Accounts.sendEnrollmentEmail(userId, email);
     }
 });

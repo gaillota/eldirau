@@ -1,14 +1,8 @@
 <template name="admin.layout">
     <section class="section">
         <div class="container">
-            <div class="columns">
-                <div class="column is-3">
-                    {{> Template.dynamic template="admin.component.menu"}}
-                </div>
-                <div class="column">
-                    {{> Template.dynamic template=section}}
-                </div>
-            </div>
+            {{> Template.dynamic template="admin.component.menu"}}
+            {{> Template.dynamic template=section}}
         </div>
     </section>
 </template>

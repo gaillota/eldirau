@@ -5,6 +5,12 @@ import '../../api/albums/methods';
 import '../../api/albums/server/publications';
 
 /**
+ * Comments API
+ */
+import '../../api/comments/methods';
+import '../../api/comments/server/publications';
+
+/**
  * Photos API
  */
 import '../../api/photos/methods';

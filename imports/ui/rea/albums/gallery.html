@@ -1,5 +1,5 @@
 <template name="rea.albums.gallery">
-    <section class="section">
+    <section class="section bottom-padding">
         <div class="container">
             {{#unless Template.subscriptionsReady}}
                 {{> loading}}
@@ -14,6 +14,9 @@
                                     </h1>
                                     <h3 class="subtitle" style="margin-top: 5px;">
                                         {{description}}
+                                    </h3>
+                                    <h3 class="subtitle is-6" style="margin-top: 5px;">
+                                        {{formatDate createdAt}}
                                     </h3>
                                 </div>
                             </div>
@@ -66,24 +69,12 @@
                                 {{/with}}
                             </div>
                             <div class="column is-narrow">
-                                <div class="control is-grouped is-pulled-right">
-                                    <p class="control">
-                                        <label for="photos" class="button is-success">
-                                            Upload photos
-                                            <input type="file" id="photos" multiple hidden>
-                                        </label>
-                                    </p>
-                                    <p class="control">
-                                        {{> Template.dynamic template="rea.albums.share.button" data=shareButtonData}}
-                                    </p>
-                                    <p class="control">
-                                        {{> Template.dynamic template="rea.albums.edit.button" data=editButtonData}}
-                                    </p>
-                                    <p class="control">
-                                        {{> Template.dynamic template="rea.albums.remove.button" data=removeButtonData}}
-                                    </p>
-                                </div>
-                                <div class="is-clearfix"></div>
+                                <p class="control">
+                                    <label for="photos" class="button is-success is-fullwidth">
+                                        Upload photos
+                                        <input type="file" id="photos" multiple hidden>
+                                    </label>
+                                </p>
                             </div>
                         </div>
                     {{/if}}
@@ -107,17 +98,14 @@
                             </div>
                         {{/each}}
                     </div>
-                    {{#if hasPagination}}
+                    {{#if pagination}}
                         <nav class="pagination is-centered">
-                            <a href="{{previousPageHref}}"
-                               class="pagination-previous {{previousPageDisabled}} js-previous-page">Previous</a>
-                            <a href="{{nextPageHref}}" class="pagination-next {{nextPageDisabled}} js-next-page">Next
-                                page</a>
+                            <a class="pagination-previous {{previousPageDisabled}} js-previous-page">Previous</a>
+                            <a class="pagination-next {{nextPageDisabled}} js-next-page">Next page</a>
                             <ul class="pagination-list">
-                                {{#each page in pages}}
+                                {{#each pages}}
                                     <li>
-                                        <a href="{{pathFor 'rea.albums.gallery.page' albumId=this._id page=page}}"
-                                           class="pagination-link {{currentPage page}}">
+                                        <a class="pagination-link {{currentPage}}">
                                             {{page}}
                                         </a>
                                     </li>

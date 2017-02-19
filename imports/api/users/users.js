@@ -28,6 +28,10 @@ const UserProfile = new SimpleSchema({
         min: 2,
         max: 60
     },
+    likesCount: {
+        type: Number,
+        defaultValue: 0
+    }
 });
 
 // User Simple Schema for server validation

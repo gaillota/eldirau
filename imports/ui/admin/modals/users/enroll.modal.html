@@ -1,0 +1,36 @@
+<template name="admin.users.enroll.modal">
+    <div class="modal {{isActive}}">
+        <div class="modal-background js-hide-modal"></div>
+        <div class="modal-card is-rounded">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    Invite new user
+                </p>
+                <button class="delete js-hide-modal"></button>
+            </header>
+            {{#autoForm schema=enrollForm id=formId type="method" meteormethod="users.enroll"}}
+                <section class="modal-card-body">
+                    <label class="label">{{afFieldLabelText name="firstName"}}</label>
+                    <p class="control">
+                        {{> afFieldInput name="firstName" class="input"}}
+                        <span class="help is-danger">{{{afFieldMessage name='firstName'}}}</span>
+                    </p>
+                    <label class="label">{{afFieldLabelText name="lastName"}}</label>
+                    <p class="control">
+                        {{> afFieldInput name="lastName" class="input"}}
+                        <span class="help is-danger">{{{afFieldMessage name='lastName'}}}</span>
+                    </p>
+                    <label class="label">{{afFieldLabelText name="email"}}</label>
+                    <p class="control">
+                        {{> afFieldInput name="email" class="input"}}
+                        <span class="help is-danger">{{{afFieldMessage name='email'}}}</span>
+                    </p>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="submit" class="button is-primary">Submit</button>
+                    <button type="button" class="button js-hide-modal">Cancel</button>
+                </footer>
+            {{/autoForm}}
+        </div>
+    </div>
+</template>

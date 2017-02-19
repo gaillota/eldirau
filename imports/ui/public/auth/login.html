@@ -1,10 +1,13 @@
 <template name="public.auth.login">
-    <section class="hero is-fullheight is-primary is-bold">
+    <section class="hero">
         <div class="hero-body">
             <div class="container">
+                <figure class="image is-128x128" style="margin: 0 auto 20px;">
+                    <img src="{{assets 'assets/images/logo.jpg'}}" alt="logo">
+                </figure>
                 <div class="columns">
                     <div class="column is-4 is-offset-4">
-                        <h1 class="title">Log in</h1>
+                        <h1 class="title has-text-centered">Log in</h1>
                         <div class="box">
                             {{#autoForm schema=loginForm id="public.auth.login"}}
                                 <label class="label">{{afFieldLabelText name="email"}}</label>

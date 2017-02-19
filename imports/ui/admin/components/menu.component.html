@@ -1,12 +1,12 @@
 <template name="admin.component.menu">
-    <aside class="menu">
-        <p class="menu-label">
-            Administration
-        </p>
-        <ul class="menu-list">
+    <h1 class="title">Administration</h1>
+    <div class="tabs is-centered">
+        <ul>
             {{#each section in sections}}
-                <li><a href="{{pathFor section.name}}" class="{{active section.name}}">{{section.friendlyName}}</a></li>
+                <li class="{{active section.name}}">
+                    <a href="{{pathFor section.name}}">{{section.friendlyName}}</a>
+                </li>
             {{/each}}
         </ul>
-    </aside>
+    </div>
 </template>

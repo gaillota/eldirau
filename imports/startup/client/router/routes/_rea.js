@@ -37,13 +37,6 @@ albumGroup.route('/:albumId', {
     }
 });
 
-albumGroup.route('/:albumId/page/:page', {
-    name: 'rea.albums.gallery.page',
-    action() {
-        BlazeLayout.render('layout', {page: 'rea.albums.gallery'});
-    }
-});
-
 albumGroup.route('/:albumId/photo/:photoId', {
     name: 'rea.albums.photo.slider',
     action() {

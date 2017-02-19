@@ -7,14 +7,14 @@
                 General
             </p>
             <ul class="menu-list">
-                <li><a href="{{pathFor 'rea.index'}}">Overview</a></li>
+                <li><a class="{{isActiveRoute name='rea.index'}}" href="{{pathFor 'rea.index'}}">Overview</a></li>
             </ul>
             <p class="menu-label">
                 Albums
             </p>
             <ul class="menu-list">
-                <li><a href="{{pathFor 'rea.my-albums'}}">My albums ({{myAlbumsCount}})</a></li>
-                <li><a href="{{pathFor 'rea.shared-with-me'}}">Shared with me ({{albumsSharedCount}})</a></li>
+                <li><a class="{{isActiveRoute name='rea.my-albums'}}" href="{{pathFor 'rea.my-albums'}}">My albums ({{myAlbumsCount}})</a></li>
+                <li><a class="{{isActiveRoute name='rea.shared-with-me'}}" href="{{pathFor 'rea.shared-with-me'}}">Shared with me ({{albumsSharedCount}})</a></li>
             </ul>
         </aside>
     {{/unless}}

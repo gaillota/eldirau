@@ -9,9 +9,9 @@
                     {{#if section}}
                         {{> Template.dynamic template=section}}
                     {{else}}
-                        {{> Template.dynamic template="rea.albums.section.my-albums" data=indexData}}
-                        <hr>
                         {{> Template.dynamic template="rea.albums.section.shared-with-me" data=indexData}}
+                        <hr>
+                        {{> Template.dynamic template="rea.albums.section.my-albums" data=indexData}}
                     {{/if}}
                 </div>
             </div>

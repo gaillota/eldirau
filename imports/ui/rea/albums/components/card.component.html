@@ -1,14 +1,8 @@
 <template name="rea.albums.card">
-    <div class="card">
+    <div class="card album-card">
         <div class="card-image">
             <figure class="image is-4by3">
-                <a href="{{pathFor 'rea.albums.gallery' albumId=this._id}}">
-                    {{#each photo in this.preview}}
-                        <img src="{{fileURL photo}}" alt="{{this.name}}_preview">
-                    {{else}}
-                        <img src="{{assets '/images/preview.jpg'}}" alt="preview">
-                    {{/each}}
-                </a>
+                <a class="album-preview" href="{{pathFor 'rea.albums.gallery' albumId=this._id}}" style="background-image: url({{#with preview}}{{fileURL this}}{{else}}{{assets 'assets/images/preview.jpg'}}{{/with}});"></a>
             </figure>
         </div>
         <div class="card-content">
@@ -41,13 +35,16 @@
                     {{/with}}
                 </p>
                 <small>{{formatDate this.createdAt 'HH:mm - D MMMM YYYY'}}</small>
-                <div class="control is-grouped" style="margin-top: 5px;">
-                    <p class="control">
+                <div class="columns" style="margin-top: 5px;">
+                    <div class="column">
                         {{> Template.dynamic template="rea.albums.share.button" data=shareButtonData}}
-                    </p>
-                    <p class="control">
+                    </div>
+                    <div class="column">
                         {{> Template.dynamic template="rea.albums.edit.button" data=editButtonData}}
-                    </p>
+                    </div>
+                    <div class="column">
+                        {{> Template.dynamic template="rea.albums.remove.button" data=removeButtonData}}
+                    </div>
                 </div>
             </div>
         </div>

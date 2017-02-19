@@ -1,0 +1,26 @@
+X - Photo preview comments count
+Album download
+X - Album preview not streched
+i18n support
+X - Hide home link in navbar when logged out
+(Edit comment)
+X - Work on gallery design
+X - Reorder function for registration
+X - Remove login/register icons
+X - Remove description
+X - Change pagination from url to reactiveVar
+Set the preview photo for album
+Try to use upload manager (inchallah !)
+Make the video upload possible
+Recode gallery with dedicated template for photos
+Change notification style
+Add subscription manager
+Add NProgress bar
+
+-- Admin
+Likes count
+User search in admin
+User infos modal
+Overview graphes
+Album section
+Unlink photo

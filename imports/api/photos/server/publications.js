@@ -1,10 +1,12 @@
 import {Meteor} from 'meteor/meteor';
 import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 import {Counts} from 'meteor/tmeasday:publish-counts';
+import {Roles} from 'meteor/alanning:roles';
 
 import {Photos} from '../photos';
 import {PhotoRepository} from '../../../startup/repositories';
 import {Albums} from '../../albums/albums';
+import {Comments} from '../../comments/comments';
 
 Meteor.publishComposite('photos.album', (albumId, page = 1, limit = 12) => {
     return {
@@ -51,24 +53,12 @@ Meteor.publishComposite('photo.view', (photoId) => {
                 return this.ready();
             }
 
-            const nonDeleted = {$exists: false};
-            const photo = Photos.collection.find({
+            return Photos.collection.find({
                 _id: photoId,
-                "meta.deletedAt": nonDeleted,
-                "meta.comments.deletedAt": nonDeleted
+                "meta.deletedAt": {
+                    $exists: false
+                },
             });
-
-            if (!photo.count()) {
-                throw new Meteor.Error("not-found", 'Photo not found');
-            }
-
-            const album = Albums.findOne(photo.fetch()[0].meta.albumId);
-
-            if (!album.hasAccess(this.userId)) {
-                throw new Meteor.Error("not-authorized", "You are not allowed to see this photo");
-            }
-
-            return photo;
         },
         children: [
             {
@@ -86,8 +76,8 @@ Meteor.publishComposite('photo.view', (photoId) => {
             {
                 find(photo) {
                     // Likes
-                    const likes = photo.meta.likes;
-                    if (likes && likes.length > 0 && likes.length < 4) {
+                    const likes = photo.meta.likes || [];
+                    if (likes.length > 0 && likes.length < 4) {
                         return Meteor.users.find({
                             _id: {
                                 $in: likes
@@ -98,14 +88,13 @@ Meteor.publishComposite('photo.view', (photoId) => {
             },
             {
                 find(photo) {
-                    const comments = photo.meta.comments;
-                    if (comments && !!comments.length) {
-                        return Meteor.users.find({
-                            _id: {
-                                $in: comments.map(c => c.userId)
-                            }
-                        });
-                    }
+                    // Comments
+                    return Comments.find({
+                        photoId: photo._id,
+                        deletedAt: {
+                            $exists: false
+                        }
+                    });
                 }
             }
         ]

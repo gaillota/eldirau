@@ -22,15 +22,17 @@ const templateName = "rea.albums.gallery";
 
 Template[templateName].onCreated(function () {
     this.getAlbumId = () => FlowRouter.getParam("albumId");
-    this.getPage = () => Math.max(FlowRouter.getParam("page") || 1, 1);
     this.getTotalPhotos = () => Counts.get('album.photos.count');
-    this.getTotalPages = () => Math.ceil(this.getTotalPhotos() / this.state.get('limit'));
+    this.getPage = () => this.state.get('page');
+    this.getLimit = () => this.state.get('limit');
+    this.getPages = () => Math.ceil(this.getTotalPhotos() / this.getLimit());
     this.hasPreviousPage = () => this.getPage() > 1;
-    this.hasNextPage = () => this.getPage() < this.getTotalPages();
-    this.getPagePath = (page) => FlowRouter.path('rea.albums.gallery.page', {
-        albumId: this.getAlbumId(),
-        page: page
-    });
+    this.hasNextPage = () => this.getPage() < this.getPages();
+    this.goTo = (page) => page > 0 && page < this.getPages() + 1 ? this.state.set('page', page) : '';
+    // this.getPagePath = (page) => FlowRouter.path('rea.albums.gallery.page', {
+    //     albumId: this.getAlbumId(),
+    //     page: page
+    // });
     this.upload = () => {
         const template = this;
         const file = template.stack.shift();
@@ -64,18 +66,19 @@ Template[templateName].onCreated(function () {
     };
 
     this.state = new ReactiveDict();
+    this.state.set('page', 1);
     this.state.set('limit', 12);
     this.state.set('currentUpload', 0);
     this.state.set('totalUploads', 0);
 
-    // Forced to use a Reactive Var, RangeError on *state* otherwise
+    // Forced to use a separated Reactive Var, RangeError on *state* otherwise
     this.currentFile = new ReactiveVar(false);
 
     this.stack = [];
 
     this.autorun(() => {
         this.subscribe('album', this.getAlbumId());
-        this.subscribe('photos.album', this.getAlbumId(), this.getPage(), this.state.get('limit'));
+        this.subscribe('photos.album', this.getAlbumId(), this.getPage(), this.getLimit());
     });
 });
 
@@ -107,36 +110,10 @@ Template[templateName].helpers({
     totalUploads() {
         return Template.instance().state.get('totalUploads');
     },
-    shareButtonData() {
-        return {
-            albumId: this._id,
-            text: 'Share album'
-        }
-    },
-    editButtonData() {
-        return {
-            albumId: this._id,
-            text: 'Edit album'
-        }
-    },
-    removeButtonData() {
-        return {
-            albumId: this._id,
-            text: 'Remove album'
-        }
-    },
-    hasPagination() {
+    pagination() {
         const template = Template.instance();
 
-        return template.getTotalPhotos() > template.state.get('limit');
-    },
-    previousPageHref() {
-        const template = Template.instance();
-        return template.hasPreviousPage() && template.getPagePath(template.getPage() - 1);
-    },
-    nextPageHref() {
-        const template = Template.instance();
-        return template.hasNextPage() && template.getPagePath(template.getPage() + 1);
+        return template.getTotalPhotos() > template.getLimit();
     },
     previousPageDisabled() {
         return !Template.instance().hasPreviousPage() && 'is-disabled';
@@ -145,10 +122,10 @@ Template[templateName].helpers({
         return !Template.instance().hasNextPage() && 'is-disabled';
     },
     pages() {
-        return _.range(1, Template.instance().getTotalPages() + 1);
+        return _.range(Template.instance().getPages()).map(p => ({page: p + 1}));
     },
-    currentPage(page) {
-        return Template.instance().getPage() === page && 'is-current';
+    currentPage() {
+        return Template.instance().getPage() === this.page && 'is-current';
     },
     likesCount() {
         const likes = this.meta.likes || [];
@@ -156,9 +133,7 @@ Template[templateName].helpers({
         return likes.length;
     },
     commentsCount() {
-        const comments = this.meta.comments || [];
-
-        return comments.length;
+        return this.meta.commentsCount;
     }
 });
 
@@ -188,5 +163,20 @@ Template[templateName].events({
                 }
             });
         }
+    },
+    'click .js-previous-page'(event, template) {
+        event.preventDefault();
+
+        template.goTo(template.getPage() - 1);
+    },
+    'click .js-next-page'(event, template) {
+        event.preventDefault();
+
+        template.goTo(template.getPage() + 1);
+    },
+    'click .pagination-link'(event, template) {
+        event.preventDefault();
+
+        template.goTo(this.page);
     }
 });

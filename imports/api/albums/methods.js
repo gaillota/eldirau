@@ -1,7 +1,7 @@
 import {ValidatedMethod} from 'meteor/mdg:validated-method';
+import {SimpleSchema} from 'meteor/aldeed:simple-schema';
 
 import {Albums} from './albums';
-import {Photos} from '../photos/photos';
 import {form as AlbumForm} from "../../startup/common/forms/albums/album.form";
 
 const mixins = ValidatedMethod.mixins;

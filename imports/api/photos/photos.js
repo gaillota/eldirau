@@ -41,45 +41,6 @@ if (Meteor.isServer) {
     });
 }
 
-export const CommentSchema = new SimpleSchema({
-    commentId: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Id,
-        autoValue: function () {
-            if (this.isUpdate && !this.isSet) {
-                console.log('returning random id');
-                return Random.id();
-            }
-        }
-    },
-    userId: {
-        type: String,
-        regEx: SimpleSchema.RegEx.Id,
-    },
-    text: {
-        type: String
-    },
-    postedAt: {
-        type: Date,
-        autoValue: function () {
-            if (this.isUpdate && !this.isSet) {
-                return new Date();
-            }
-        }
-    },
-    updatedAt: {
-        type: Date,
-        autoValue: function () {
-            return new Date();
-        },
-        optional: true
-    },
-    deletedAt: {
-        type: Date,
-        optional: true
-    }
-});
-
 const schema = _extend(Photos.schema, {
     // Overriding meta property
     meta: {
@@ -118,19 +79,11 @@ const schema = _extend(Photos.schema, {
     "meta.likes": {
         type: [String],
         regEx: SimpleSchema.RegEx.Id,
-        autoValue: function () {
-            if (this.isInsert && !this.isSet) {
-                return [];
-            }
-        },
+        optional: true
     },
-    "meta.comments": {
-        type: [CommentSchema],
-        autoValue: function () {
-            if (this.isInsert && !this.isSet) {
-                return [];
-            }
-        },
+    "meta.commentsCount": {
+        type: Number,
+        defaultValue: 0
     }
 });
 

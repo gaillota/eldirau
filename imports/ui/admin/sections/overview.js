@@ -9,6 +9,7 @@ Template[templateName].onCreated(function () {
     this.subscribe('users.admin.count');
     this.subscribe('albums.admin.count');
     this.subscribe('photos.admin.count');
+    this.subscribe('comments.admin.count');
 });
 
 Template[templateName].helpers({
@@ -25,6 +26,6 @@ Template[templateName].helpers({
         return 0;
     },
     commentsCount() {
-        return 0;
+        return Counts.get('comments.admin.count');
     }
 });

@@ -10,7 +10,7 @@ import {getModalData, toggleModal} from '../../../../startup/utilities';
 import roles from '../../../../startup/client/roles';
 
 const templateName = 'admin.users.roles.modal';
-const modalName = 'user.roles';
+const modalName = 'admin.users.roles';
 
 Template[templateName].onCreated(function() {
     this.getUserId = () => getModalData(modalName);

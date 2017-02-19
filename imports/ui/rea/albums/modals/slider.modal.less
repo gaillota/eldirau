@@ -2,10 +2,28 @@
     .modal-content {
         width: 100%;
         height: 97%;
-        margin: 0 70px;
+        margin: 0 10px;
         padding: 0;
         display: flex;
         flex-flow: row wrap;
+
+        @media screen and (min-width: @tablet) {
+            & {
+                margin: 0 20px;
+            }
+        }
+
+        @media screen and (min-width: @desktop) {
+            & {
+                margin: 0 70px;
+            }
+        }
+
+        @media screen and (min-width: @widescreen) {
+            & {
+                margin: 0 10vw;
+            }
+        }
 
         .photo-container {
             flex-grow: 1;
@@ -26,15 +44,16 @@
                 display: flex;
                 flex-flow: row nowrap;
                 align-items: stretch;
+                justify-content: space-between;
+                cursor: pointer;
 
-                .photo-link {
+                .spacer {
                     flex-grow: 1;
                 }
 
                 .previous, .next {
                     font-size: 9rem;
                     padding: 0;
-                    margin: 0 5px;
                     width: 5%;
                     display: flex;
                     flex-direction: row;
@@ -53,20 +72,108 @@
         }
 
         .photo-details {
-            width: 360px;
-            background: white;
-            padding: 10px 10px 0 20px;
+            width: 100%;
+            background: #f6f7f9;
             display: flex;
             flex-direction: column;
 
-            .comment {
-                .media-right > .delete {
-                    opacity: 0;
-                    .transition(all, 500ms);
+            @media screen and (min-width: @desktop) {
+                & {
+                    width: 340px;
+                }
+            }
+
+            .photo-infos {
+                background: #fff;
+                padding: 10px 17px;
+                border-bottom: 1px solid #e1e2e3;
+
+                .controls {
+                    border-top: 1px solid #e1e2e3;
+                    padding-top: 5px;
+                }
+                .controls > .is-grouped > .control {
+                    .button {
+                        background: transparent;
+                        border: 0;
+                        text-decoration: underline;
+
+                        &:active, &:focus {
+                            box-shadow: none;
+                        }
+                    }
+                    .like-button.active {
+                        color: #6a69ff;
+                    }
+                    .edit-button {
+                        color: orange;
+                    }
+                    .remove-button {
+                        color: red;
+                    }
+                }
+            }
+
+            .photo-social {
+                padding-top: 10px;
+                display: flex;
+                flex-direction: column;
+
+                .likes {
+                    flex: 0 0 auto;
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #e1e2e3;
                 }
 
-                &:hover .media-right > .delete {
-                    opacity: 1;
+                .comments {
+                    overflow: auto;
+                    flex: 1 1 auto;
+
+                    .comment {
+                        padding-left: 10px;
+                        padding-top: 10px;
+
+                        &:last-child {
+                            padding-bottom: 20px;
+                            border-bottom: 1px solid #e1e2e3;
+                        }
+
+                        &__content {
+                            &__author {
+                                color: #555;
+                            }
+                            &__text {
+                                word-wrap: break-word;
+                                word-break: break-all;
+                                overflow-wrap: break-word;
+                                font-size: 0.9em;
+                            }
+                        }
+
+                        .media-right {
+                            margin-right: 10px;
+                        }
+
+                        .media-right > .delete {
+                            opacity: 0;
+                            .transition(all, 500ms);
+                        }
+
+                        &:hover .media-right > .delete {
+                            opacity: 1;
+                        }
+                    }
+
+                }
+
+                .comment {
+                    flex: 0 0 auto;
+                    padding-top: 10px;
+                    article.comment-input {
+                        padding: 0 10px;
+                    }
                 }
             }
         }

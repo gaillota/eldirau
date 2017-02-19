@@ -8,7 +8,7 @@ const templateName = "rea.albums.share.button";
 
 Template[templateName].helpers({
     type() {
-        return Template.currentData().type || 'info';
+        return Template.currentData().type;
     },
     text() {
         return Template.currentData().text || 'Share';

@@ -15,14 +15,14 @@ import '../../../../ui/public/auth/reset-password';
 FlowRouter.route('/register', {
     name: 'public.auth.register',
     action() {
-        BlazeLayout.render('public.auth.register');
+        BlazeLayout.render('layout', {page: 'public.auth.register'});
     }
 });
 
 FlowRouter.route('/login', {
     name: 'public.auth.login',
     action() {
-        BlazeLayout.render('public.auth.login');
+        BlazeLayout.render('layout', {page: 'public.auth.login'});
     },
     triggersExit: [resetDispatcher]
 });
@@ -44,13 +44,13 @@ FlowRouter.route('/verify-email/:token', {
 FlowRouter.route('/forgot-password', {
     name: 'public.auth.forgot-password',
     action() {
-        BlazeLayout.render('public.auth.forgot-password');
+        BlazeLayout.render('layout', {page: 'public.auth.forgot-password'});
     }
 });
 
 FlowRouter.route('/reset-password/:token', {
     name: 'public.auth.reset-password',
     action() {
-        BlazeLayout.render('public.auth.reset-password');
+        BlazeLayout.render('layout', {page: 'public.auth.reset-password'});
     }
 });
